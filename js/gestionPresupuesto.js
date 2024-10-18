@@ -1,5 +1,17 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
 
+//mis pruebas
+
+let miGasto = new CrearGasto("Gasto materiales",20,"2021-10-06T13:10Z","casa", "supermercado");
+
+
+console.log(miGasto.mostrarGastoCompleto());
+
+
+
+
+
+
 // TODO: Variable global
 let presupuesto = 0;
 let gastos = new Array();
@@ -56,6 +68,20 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
         if (valor > 0) this.valor = valor;
     }
 
+    this.mostrarGastoCompleto = function () {
+       
+        let fechaTexto = new Date(this.fecha).toLocaleString();
+        let etiquetasGasto="";
+
+            this.etiquetas.forEach(etiqueta => {
+                etiquetasGasto = etiquetasGasto + " - "+etiqueta+"\n"
+            });
+
+            return this.mostrarGasto()+"\n"+"Fecha: "+fechaTexto+"\n"+etiquetasGasto
+
+    }
+
+
 }
 
 function listarGastos() {
@@ -70,14 +96,14 @@ function anyadirGasto(gasto) {
 
 function borrarGasto(id) {
     for (let i = 0; i < gastos.length; i++) {
-        if(gastos[i].id == id){
-            gastos.splice(i,1);
-        } 
+        if (gastos[i].id == id) {
+            gastos.splice(i, 1);
+        }
     }
 }
 
 function calcularTotalGastos() {
-    let suma=0;
+    let suma = 0;
     for (let i = 0; i < gastos.length; i++) {
         suma = suma + gastos[i].valor;
     }
@@ -85,8 +111,11 @@ function calcularTotalGastos() {
 }
 
 function calcularBalance() {
- return presupuesto - calcularTotalGastos();
+    return presupuesto - calcularTotalGastos();
 }
+
+
+
 
 
 
