@@ -2,13 +2,8 @@
 
 //mis pruebas
 
-let miGasto = new CrearGasto("Gasto materiales",20,"2021-10-06T13:10Z","casa", "supermercado");
-
-
+let miGasto = new CrearGasto("Gasto materiales", 20, "2021-10-06T13:10Z", "casa", "supermercado");
 console.log(miGasto.mostrarGastoCompleto());
-
-
-
 
 
 
@@ -69,19 +64,37 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
     }
 
     this.mostrarGastoCompleto = function () {
-       
+
         let fechaTexto = new Date(this.fecha).toLocaleString();
-        let etiquetasGasto="";
+        let etiquetasGasto = "";
 
-            this.etiquetas.forEach(etiqueta => {
-                etiquetasGasto = etiquetasGasto + " - "+etiqueta+"\n"
-            });
+        this.etiquetas.forEach(etiqueta => {
+            etiquetasGasto = etiquetasGasto + " - " + etiqueta + "\n";
+        });
 
-            return this.mostrarGasto()+"\n"+"Fecha: "+fechaTexto+"\n"+etiquetasGasto
+        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + etiquetasGasto;
 
     }
 
+    this.actualizarFecha = function (fecha) {
+        this.fecha = Date.parse(fecha);
+    }
 
+    this.anyadirEtiquetas = function (...etiquetasNuevas) {
+        etiquetasNuevas.forEach(e => {
+            if (this.etiquetas.findIndex(e) != -1) {
+                etiquetas.push(e);
+            }
+        });
+    }
+
+    this.borrarEtiquetas = function (...etiquetasABorrar) {
+        etiquetasABorrar.forEach(e => {
+            if (this.etiquetas.findIndex(e) != -1) {
+                this.etiquetas.filter(etiqueta => etiqueta == e)
+            }
+        });
+    }
 }
 
 function listarGastos() {
