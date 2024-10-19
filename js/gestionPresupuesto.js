@@ -52,7 +52,7 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
     }
 
     this.mostrarGasto = function () {
-        return "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €";
+        return "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.";
     }
 
     this.actualizarDescripcion = function (descripcion) {
@@ -69,15 +69,20 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
         let etiquetasGasto = "";
 
         this.etiquetas.forEach(etiqueta => {
-            etiquetasGasto = etiquetasGasto + " - " + etiqueta + "\n";
+            etiquetasGasto = etiquetasGasto + "- " + etiqueta + "\n";
         });
 
-        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + etiquetasGasto;
+        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + "Etiquetas:\n"+etiquetasGasto;
+
+        
 
     }
 
     this.actualizarFecha = function (fecha) {
-        this.fecha = Date.parse(fecha);
+
+        if(!Number.isNaN(Date.parse(fecha))) {
+            this.fecha=Date.parse(fecha);
+        }
     }
 
     this.anyadirEtiquetas = function (...etiquetasNuevas) {
@@ -126,10 +131,6 @@ function calcularTotalGastos() {
 function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
-
-
-
-
 
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
