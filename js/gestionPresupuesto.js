@@ -1,5 +1,5 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
-let gasto1 = new CrearGasto("descr");
+
 
 // TODO: Variable global
 let presupuesto = 0;
@@ -39,12 +39,9 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
         this.fecha = Date.parse(fecha); // Si fecha tiene formato valido, parseamos.
     }
 
-    if (etiquetas === undefined) { // Si no se pasa el parametro de etiquetas, se crea un array vacío.
-        this.etiquetas = new Array();
-    }
-    else {
-        this.etiquetas = etiquetas;
-    }
+
+    this.etiquetas = new Array(); // CORRECIÓN DEL PROFESOR. Inicializamos con array vacío y posteriormente utilizamos el método anyadirEtiquetas. De esta manera evitamos etiquetas duplicadas desde la creación del objeto.
+
 
     this.mostrarGasto = function () {
         return "Gasto correspondiente a " + this.descripcion + " con valor " + this.valor + " €.";
@@ -85,6 +82,8 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
         }
 
     }
+
+    this.anyadirEtiquetas(...etiquetas); // CORRECIÓN DEL PROFESOR. En lugar de pasar directamente el listado de etiquetas, puedes utilizar this.anyadirEtiquetas para eliminar duplicados, por ejemplo.
 
     this.borrarEtiquetas = function (...etiquetasABorrar) { // Recorremos todas las etiquetas a borrar, y si estan se elimina. Si no esta no se hace nada.
         let index;
