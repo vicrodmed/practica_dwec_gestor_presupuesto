@@ -1,4 +1,5 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
+let gasto1 = new CrearGasto("descr");
 
 // TODO: Variable global
 let presupuesto = 0; 
@@ -6,8 +7,8 @@ let gastos = new Array();
 let idGasto = 0;
 
 function actualizarPresupuesto(valor) {
-    
-    if (typeof valor === 'number' && valor > 0) {
+
+    if (typeof valor === 'number' && valor > 0) { // Comprueba si valor es un número y es positivo
         presupuesto = valor;
         return presupuesto;
     }
@@ -21,24 +22,24 @@ function mostrarPresupuesto() {
     return "Tu presupuesto actual es de " + presupuesto + " €";
 }
 
-function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
+function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // Valor por defecto en fecha, seria fecha actual.
 
     this.descripcion = descripcion;
 
-    if (valor > 0) {
+    if (valor > 0) { // Si el valor es positivo lo almacenamos, y si no asignamos a valor 0.
         this.valor = valor;
     } else {
         this.valor = 0;
     }
 
-    if (isNaN(Date.parse(fecha))) {
+    if (isNaN(Date.parse(fecha))) { // Si la fecha no tiene formato valido, almacenamos fecha actual.
         this.fecha = Date.now();
     }
     else {
-        this.fecha = Date.parse(fecha);
+        this.fecha = Date.parse(fecha); // Si fecha tiene formato valido, parseamos.
     }
 
-    if (etiquetas === undefined) {
+    if (etiquetas === undefined) { // Si no se pasa el parametro de etiquetas, se crea un array vacío.
         this.etiquetas = new Array();
     }
     else {
@@ -59,42 +60,38 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
 
     this.mostrarGastoCompleto = function () {
 
-        let fechaTexto = new Date(this.fecha).toLocaleString();
-        let etiquetasGasto = "";
+        let fechaTexto = new Date(this.fecha).toLocaleString(); // fechaTexto almacenamos fecha legible.
+        let etiquetasGasto = ""; 
 
-        this.etiquetas.forEach(etiqueta => {
+        this.etiquetas.forEach(etiqueta => { // etiquetasGasto almacena todas las etiquetas listadas con un guión
             etiquetasGasto = etiquetasGasto + "- " + etiqueta + "\n";
         });
 
-        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + "Etiquetas:\n" + etiquetasGasto;
-
-
-
+        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + "Etiquetas:\n" + etiquetasGasto; //Concatenamos todo y devolvemos en el formato exigido.
     }
 
     this.actualizarFecha = function (fecha) {
 
-        if (!Number.isNaN(Date.parse(fecha))) {
+        if (!Number.isNaN(Date.parse(fecha))) { // Comprobamos que sea un formato válido
             this.fecha = Date.parse(fecha);
         }
     }
 
     this.anyadirEtiquetas = function (...etiquetasNuevas) {
 
-        for (let e of etiquetasNuevas) {
+        for (let e of etiquetasNuevas) { // Recorremos todas las etiquetas a añadir, y si no están se insertan
             if (this.etiquetas.indexOf(e) == -1)
                 this.etiquetas.push(e);
         }
 
     }
 
-    this.borrarEtiquetas = function (...etiquetasABorrar) {
+    this.borrarEtiquetas = function (...etiquetasABorrar) { // Recorremos todas las etiquetas a borrar, y si estan se elimina. Si no esta no se hace nada.
         let index;
         for (let e of etiquetasABorrar) {
-            index= this.etiquetas.indexOf(e);
-            if (index != -1)
-            {
-                this.etiquetas.splice(index,1);
+            index = this.etiquetas.indexOf(e);
+            if (index != -1) {
+                this.etiquetas.splice(index, 1);
             }
         }
     }
@@ -104,13 +101,13 @@ function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto(gasto) {
+function anyadirGasto(gasto) { 
     gasto.id = idGasto;
     idGasto++;
     gastos.push(gasto);
 }
 
-function borrarGasto(id) {
+function borrarGasto(id) { // Recorremos el array gastos y si existe coincidencia con id, se elimina el objeto CrearGasto.
     for (let i = 0; i < gastos.length; i++) {
         if (gastos[i].id == id) {
             gastos.splice(i, 1);
