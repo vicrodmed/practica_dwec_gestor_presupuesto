@@ -1,18 +1,12 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
 
-//mis pruebas
-
-let miGasto = new CrearGasto("Gasto materiales", 20, "2021-10-06T13:10Z", "casa", "supermercado");
-console.log(miGasto.mostrarGastoCompleto());
-
-
-
 // TODO: Variable global
-let presupuesto = 0;
+let presupuesto = 0; 
 let gastos = new Array();
 let idGasto = 0;
 
 function actualizarPresupuesto(valor) {
+    
     if (typeof valor === 'number' && valor > 0) {
         presupuesto = valor;
         return presupuesto;
@@ -72,33 +66,37 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) {
             etiquetasGasto = etiquetasGasto + "- " + etiqueta + "\n";
         });
 
-        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + "Etiquetas:\n"+etiquetasGasto;
+        return this.mostrarGasto() + "\n" + "Fecha: " + fechaTexto + "\n" + "Etiquetas:\n" + etiquetasGasto;
 
-        
+
 
     }
 
     this.actualizarFecha = function (fecha) {
 
-        if(!Number.isNaN(Date.parse(fecha))) {
-            this.fecha=Date.parse(fecha);
+        if (!Number.isNaN(Date.parse(fecha))) {
+            this.fecha = Date.parse(fecha);
         }
     }
 
     this.anyadirEtiquetas = function (...etiquetasNuevas) {
-        etiquetasNuevas.forEach(e => {
-            if (this.etiquetas.findIndex(e) != -1) {
-                etiquetas.push(e);
-            }
-        });
+
+        for (let e of etiquetasNuevas) {
+            if (this.etiquetas.indexOf(e) == -1)
+                this.etiquetas.push(e);
+        }
+
     }
 
     this.borrarEtiquetas = function (...etiquetasABorrar) {
-        etiquetasABorrar.forEach(e => {
-            if (this.etiquetas.findIndex(e) != -1) {
-                this.etiquetas.filter(etiqueta => etiqueta == e)
+        let index;
+        for (let e of etiquetasABorrar) {
+            index= this.etiquetas.indexOf(e);
+            if (index != -1)
+            {
+                this.etiquetas.splice(index,1);
             }
-        });
+        }
     }
 }
 
