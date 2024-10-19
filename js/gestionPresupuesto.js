@@ -2,7 +2,7 @@
 let gasto1 = new CrearGasto("descr");
 
 // TODO: Variable global
-let presupuesto = 0; 
+let presupuesto = 0;
 let gastos = new Array();
 let idGasto = 0;
 
@@ -61,7 +61,7 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
     this.mostrarGastoCompleto = function () {
 
         let fechaTexto = new Date(this.fecha).toLocaleString(); // fechaTexto almacenamos fecha legible.
-        let etiquetasGasto = ""; 
+        let etiquetasGasto = "";
 
         this.etiquetas.forEach(etiqueta => { // etiquetasGasto almacena todas las etiquetas listadas con un guión
             etiquetasGasto = etiquetasGasto + "- " + etiqueta + "\n";
@@ -101,7 +101,7 @@ function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto(gasto) { 
+function anyadirGasto(gasto) {
     gasto.id = idGasto;
     idGasto++;
     gastos.push(gasto);
