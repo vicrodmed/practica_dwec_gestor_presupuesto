@@ -206,7 +206,7 @@ let valor1 = 23.44,
         anyadirGasto(gasto6);
 
        
-       console.log(filtrarGastos({}));
+       console.log(filtrarGastos({valorMaximo: 50});
        
         
 
