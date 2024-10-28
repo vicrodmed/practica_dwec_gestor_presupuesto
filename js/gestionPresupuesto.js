@@ -1,6 +1,5 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
 
-
 // TODO: Variable global
 let presupuesto = 0;
 let gastos = new Array();
@@ -94,6 +93,35 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
             }
         }
     }
+
+    this.obtenerPeriodoAgrupacion = function (periodo) {
+
+        let fechaDate = new Date(this.fecha).toLocaleString();
+        let arrayFechaDate = fechaDate.split("/");
+
+        let aaaa = arrayFechaDate[2].slice(0, 4);
+        let mm = arrayFechaDate[0].length == 1 ? 0 + arrayFechaDate[0] : arrayFechaDate[0];
+        let dd = arrayFechaDate[1].length == 1 ? 0 + arrayFechaDate[1] : arrayFechaDate[1];
+
+        let fechaSalida = "";
+
+        switch (periodo) {
+            case "anyo":
+                fechaSalida = `${aaaa}`;
+                break;
+            case "mes":
+                fechaSalida = `${aaaa}-${mm}`;
+                break;
+            case "dia":
+                fechaSalida = `${aaaa}-${mm}-${dd}`;
+                break;
+
+            default:
+                break;
+        }
+
+        return fechaSalida;
+    }
 }
 
 function listarGastos() {
@@ -126,6 +154,12 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
+function filtrarGastos(){}
+
+function agruparGastos(){}
+
+
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -142,3 +176,17 @@ export {
     filtrarGastos,
     agruparGastos
 }
+
+//PRUEBAS
+
+let gasto1 = new CrearGasto("Gasto 1", 23.55, "2021-09-06", "casa", "supermercado" );
+let gasto2 = new CrearGasto("Gasto 2", 27.55, "2021-11-24", "casa", "supermercado", "comida");
+
+console.log(gasto1.obtenerPeriodoAgrupacion("dia"));
+console.log(gasto1.obtenerPeriodoAgrupacion("mes"));
+console.log(gasto1.obtenerPeriodoAgrupacion("anyo"));
+
+console.log(gasto2.obtenerPeriodoAgrupacion("dia"));
+console.log(gasto2.obtenerPeriodoAgrupacion("mes"));
+console.log(gasto2.obtenerPeriodoAgrupacion("anyo"));
+
