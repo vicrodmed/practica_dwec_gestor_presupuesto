@@ -205,7 +205,9 @@ let valor1 = 23.44,
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-       filtrarGastos();
+       
+       console.log(filtrarGastos({}));
+       
         
 
 
