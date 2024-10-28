@@ -1,5 +1,14 @@
 // TODO: Crear las funciones, objetos y variables indicadas en el  enunciado
 
+let parametrosFiltrarGastos = {
+    fechaDesde :"",
+    fechaHasta:"",
+    valorMinimo:"",
+    valorMaximo:"",
+    descripcionContiene:"",
+    etiquetasTiene:""
+}
+
 // TODO: Variable global
 let presupuesto = 0;
 let gastos = new Array();
@@ -154,12 +163,9 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
-function filtrarGastos() { 
+function filtrarGastos(parametrosFiltrarGastos) { 
 
-    let aux = gastos.filter(gasto=>gasto.valor>50);
-
-    return aux;
-
+    if (Object.keys(parametrosFiltrarGastos).length===0) return gastos;
 }
 
 function agruparGastos() { }
@@ -206,7 +212,10 @@ let valor1 = 23.44,
         anyadirGasto(gasto6);
 
        
-       console.log(filtrarGastos({valorMaximo: 50});
+       let array =filtrarGastos({});
+
+       console.log(array);
+       
        
         
 
