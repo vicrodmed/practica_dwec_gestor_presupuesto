@@ -96,33 +96,16 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
 
     this.obtenerPeriodoAgrupacion = function (periodo) {
 
-        let fechaDate = new Date(this.fecha).toLocaleString();
-        let arrayFechaDate = fechaDate.split("/");
+        let fechaString = new Date(this.fecha).toISOString(); // Como this.fecha es un timestamps, creamos un Date y obtenemos la fecha en string.
 
-        let aaaa = arrayFechaDate[2].slice(0, 4);
-        let mm = arrayFechaDate[0].length == 1 ? 0 + arrayFechaDate[0] : arrayFechaDate[0];
-        let dd = arrayFechaDate[1].length == 1 ? 0 + arrayFechaDate[1] : arrayFechaDate[1];
+        if (periodo == "mes") return fechaString.substring(0, 7);
+        if (periodo == "dia") return fechaString.substring(0, 10);
+        if (periodo == "anyo") return fechaString.substring(0, 4);
 
-        let fechaSalida = "";
-
-        switch (periodo) {
-            case "anyo":
-                fechaSalida = `${aaaa}`;
-                break;
-            case "mes":
-                fechaSalida = `${aaaa}-${mm}`;
-                break;
-            case "dia":
-                fechaSalida = `${aaaa}-${mm}-${dd}`;
-                break;
-
-            default:
-                break;
-        }
-
-        return fechaSalida;
     }
+
 }
+
 
 function listarGastos() {
     return gastos;
@@ -205,9 +188,12 @@ let valor1 = 23.44,
         anyadirGasto(gasto6);
 
        
-       let array =filtrarGastos({});
+       
 
-       console.log(array);
+       console.log(gasto1.obtenerPeriodoAgrupacion("mes"));
+       console.log(gasto1.obtenerPeriodoAgrupacion("anyo"));
+       console.log(gasto1.obtenerPeriodoAgrupacion("dia"));
+       
        
        
         
