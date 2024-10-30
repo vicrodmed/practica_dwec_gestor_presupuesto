@@ -137,9 +137,41 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
-function filtrarGastos(parametros) { 
+function filtrarGastos(parametros) {
+
+    return gastos.filter(function (gasto) {
+
+        /*
+            PARAMETROS
+            fechaDesde - Fecha mínima de creación del gasto. Su valor deberá ser un string con formato válido que pueda entender la función Date.parse.
+            fechaHasta - Fecha máxima de creación del gasto. Su valor deberá ser un string con formato válido que pueda entender la función Date.parse.
+            valorMinimo - Valor mínimo del gasto.
+            valorMaximo - Valor máximo del gasto.
+            descripcionContiene - Trozo de texto que deberá aparecer en la descripción. Deberá hacerse la comparación de manera que no se distingan mayúsculas de minúsculas.
+            etiquetasTiene - Array de etiquetas: si un gasto contiene alguna de las etiquetas indicadas en este parámetro, se deberá devolver en el resultado. Deberá hacerse la comparación de manera que no se distingan mayúsculas de minúsculas.
+        */
+
+        let resultado = true;
+
+        let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
+        let fechaHastaTimestamp = Date.parse(parametros.fechaHasta)
+
+        // FECHAS
+        if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
+        if (gasto.fecha > fechaHastaTimestamp) resultado = false;
+        if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+
+        // VALOR
+        if (gasto.valor < parametros.valorMinimo) resultado = false;
+        if (gasto.valor > parametros.valorMaximo) resultado = false;
+        if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+
+        return resultado;
+
+    });
 
     
+
 }
 
    
@@ -187,12 +219,9 @@ let valor1 = 23.44,
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-       
-       
-
-       console.log(gasto1.obtenerPeriodoAgrupacion("mes"));
-       console.log(gasto1.obtenerPeriodoAgrupacion("anyo"));
-       console.log(gasto1.obtenerPeriodoAgrupacion("dia"));
+      let aux = filtrarGastos({valorMaximo:1});
+      console.log(aux);
+      
        
        
        
