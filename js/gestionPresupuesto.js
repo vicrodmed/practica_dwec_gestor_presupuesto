@@ -153,18 +153,39 @@ function filtrarGastos(parametros) {
 
         let resultado = true;
 
-        let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
-        let fechaHastaTimestamp = Date.parse(parametros.fechaHasta)
+        //if (Object.keys(parametros).length != 0) {
 
-        // FECHAS
-        if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
-        if (gasto.fecha > fechaHastaTimestamp) resultado = false;
-        if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+            let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
+            let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
 
-        // VALOR
-        if (gasto.valor < parametros.valorMinimo) resultado = false;
-        if (gasto.valor > parametros.valorMaximo) resultado = false;
-        if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+           
+            
+
+            // FECHAS
+            if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
+            if (gasto.fecha > fechaHastaTimestamp) resultado = false;
+            if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+
+            // VALOR
+            if (gasto.valor < parametros.valorMinimo) resultado = false;
+            if (gasto.valor > parametros.valorMaximo) resultado = false;
+            if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+
+        //DESCRIPCIÓN
+        if (typeof parametros.descripcion != "undefined") {
+            let gastoDescripMinus = gasto.descripcion.toLowerCase();
+            let parametroDescripContiene = parametros.descripcionContiene.toLowerCase();
+
+            if (gastoDescripMinus.includes(parametroDescripContiene)) {
+                resultado = true;
+            }
+            else {
+                resultado = false;
+            }
+        }
+        
+
+
 
         return resultado;
 
@@ -219,9 +240,9 @@ let valor1 = 23.44,
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-      let aux = filtrarGastos({valorMaximo:1});
+      let aux = filtrarGastos({valorMinimo:3});
       console.log(aux);
-      
+       
        
        
        
