@@ -155,24 +155,22 @@ function filtrarGastos(parametros) {
 
         //if (Object.keys(parametros).length != 0) {
 
-            let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
-            let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
+        let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
+        let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
 
-           
-            
+        // FECHAS
+        if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
+        if (gasto.fecha > fechaHastaTimestamp) resultado = false;
+        if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
 
-            // FECHAS
-            if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
-            if (gasto.fecha > fechaHastaTimestamp) resultado = false;
-            if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
-
-            // VALOR
-            if (gasto.valor < parametros.valorMinimo) resultado = false;
-            if (gasto.valor > parametros.valorMaximo) resultado = false;
-            if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+        // VALOR
+        if (gasto.valor < parametros.valorMinimo) resultado = false;
+        if (gasto.valor > parametros.valorMaximo) resultado = false;
+        if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
 
         //DESCRIPCIÓN
         if (typeof parametros.descripcion != "undefined") {
+
             let gastoDescripMinus = gasto.descripcion.toLowerCase();
             let parametroDescripContiene = parametros.descripcionContiene.toLowerCase();
 
@@ -183,9 +181,19 @@ function filtrarGastos(parametros) {
                 resultado = false;
             }
         }
-        
 
-
+        //ETIQUETAS
+        if (typeof parametros.etiquetasTiene != "undefined"){
+            for (let e of gasto.etiquetas) {
+                if(e.toLowerCase()!=parametros.etiquetasTiene.toLowerCase()){
+                    resultado=false;
+                }
+                else{
+                    resultado=true;
+                    break;
+                }
+            }
+        }
 
         return resultado;
 
@@ -220,7 +228,7 @@ export {
 
 //PRUEBAS
 
-let valor1 = 23.44,
+ /* let valor1 = 23.44,
             valor2 = 12.88,
             valor3 = 22.80,
             valor4 = 62.22,
@@ -240,8 +248,8 @@ let valor1 = 23.44,
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-      let aux = filtrarGastos({valorMinimo:3});
-      console.log(aux);
+      let aux = filtrarGastos({fechaDesde: "2021-09-15", fechaHasta: "2021-10-06", valorMaximo: 150});
+      console.log(aux);  */
        
        
        
