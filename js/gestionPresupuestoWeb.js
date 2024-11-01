@@ -1,11 +1,12 @@
-function mostrarDatoEnID (idElemento,valor){
+export function mostrarDatoEnID (idElemento,valor){
+    let elemento = document.getElementById(idElemento);
+    elemento.textContent=valor;
+}
+
+export function mostrarGastoWeb (idElemento, gasto){
 
 }
 
-function mostrarGastoWeb (idElemento, gasto){
-
-}
-
-function mostrarGastosAgrupadosWeb (idElemento,agrup,periodo){
+export function mostrarGastosAgrupadosWeb (idElemento,agrup,periodo){
 
 }
