@@ -200,9 +200,23 @@ function filtrarGastos(parametros) {
 
 }
 
-   
+function agruparGastos(periodo="mes",etiquetas=[],fechaDesde,fechaHasta=new Date().toISOString().split("T")[0]) { 
 
-function agruparGastos() { }
+    let parametrosFiltrados ={
+        fechaDesde:fechaDesde,
+        fechaHasta:fechaHasta,
+        etiquetasTiene:etiquetas
+    }
+
+    let gastosFiltrados = filtrarGastos(parametrosFiltrados);
+
+    return gastosFiltrados.reduce(function(acc,gasto){ // reduce recibe dos parámetros: una función y un objeto vacío.
+
+        
+
+    },{});
+
+}
 
 
 
@@ -225,7 +239,7 @@ export {
 
 //PRUEBAS
 
-  /*  let valor1 = 23.44,
+  let valor1 = 23.44,
             valor2 = 12.88,
             valor3 = 22.80,
             valor4 = 62.22,
@@ -246,10 +260,10 @@ export {
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-      let aux = filtrarGastos({etiquetasTiene: ["comida", "gasolina"]});
-      console.log(aux.length);
+      let aux = agruparGastos("mes")
+     
       console.log(aux);      
-         */
+         
        
        
        
