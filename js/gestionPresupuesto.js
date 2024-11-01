@@ -139,37 +139,32 @@ function calcularBalance() {
 
 function filtrarGastos(parametros) {
 
-    return gastos.filter(function (gasto) {
+    if (Object.keys(parametros).length == 0) return gastos;
 
-        /*
-            PARAMETROS
-            fechaDesde - Fecha mínima de creación del gasto. Su valor deberá ser un string con formato válido que pueda entender la función Date.parse.
-            fechaHasta - Fecha máxima de creación del gasto. Su valor deberá ser un string con formato válido que pueda entender la función Date.parse.
-            valorMinimo - Valor mínimo del gasto.
-            valorMaximo - Valor máximo del gasto.
-            descripcionContiene - Trozo de texto que deberá aparecer en la descripción. Deberá hacerse la comparación de manera que no se distingan mayúsculas de minúsculas.
-            etiquetasTiene - Array de etiquetas: si un gasto contiene alguna de las etiquetas indicadas en este parámetro, se deberá devolver en el resultado. Deberá hacerse la comparación de manera que no se distingan mayúsculas de minúsculas.
-        */
+    return gastos.filter(function (gasto) {
 
         let resultado = true;
 
-        //if (Object.keys(parametros).length != 0) {
+        //FECHAS
+        if (parametros.fechaDesde !== undefined || parametros.fechaHasta !== undefined) {
 
-        let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
-        let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
+            let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
+            let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
 
-        // FECHAS
-        if (gasto.fecha < fechaDesdeTimestamp) resultado = false;
-        if (gasto.fecha > fechaHastaTimestamp) resultado = false;
-        if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+            if (gasto.fecha < fechaDesdeTimestamp) return false;
+            if (gasto.fecha > fechaHastaTimestamp) return false;
+            if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+        }
 
         // VALOR
-        if (gasto.valor < parametros.valorMinimo) resultado = false;
-        if (gasto.valor > parametros.valorMaximo) resultado = false;
-        if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+        if (parametros.valorMinimo !== undefined || parametros.valorMaximo !== undefined) {
+            if (gasto.valor < parametros.valorMinimo) return false;
+            if (gasto.valor > parametros.valorMaximo) return false;
+            if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
+        }
 
         //DESCRIPCIÓN
-        if (typeof parametros.descripcion != "undefined") {
+        if (parametros.descripcionContiene !== undefined) {
 
             let gastoDescripMinus = gasto.descripcion.toLowerCase();
             let parametroDescripContiene = parametros.descripcionContiene.toLowerCase();
@@ -178,28 +173,30 @@ function filtrarGastos(parametros) {
                 resultado = true;
             }
             else {
-                resultado = false;
+                return false;
             }
         }
 
         //ETIQUETAS
-        if (typeof parametros.etiquetasTiene != "undefined"){
-            for (let e of gasto.etiquetas) {
-                if(e.toLowerCase()!=parametros.etiquetasTiene.toLowerCase()){
-                    resultado=false;
-                }
-                else{
+        if (parametros.etiquetasTiene !== undefined) {
+
+           for (let eParametro of parametros.etiquetasTiene) {
+            
+                if(gasto.etiquetas.includes(eParametro)) {
                     resultado=true;
                     break;
                 }
-            }
+                else{
+                    resultado = false;
+                }
+           }
         }
 
         return resultado;
 
     });
 
-    
+
 
 }
 
@@ -228,7 +225,7 @@ export {
 
 //PRUEBAS
 
- /* let valor1 = 23.44,
+  /*  let valor1 = 23.44,
             valor2 = 12.88,
             valor3 = 22.80,
             valor4 = 62.22,
@@ -241,6 +238,7 @@ export {
         let gasto4 = new CrearGasto("Gasolina", valor4, "2021-10-08", "transporte", "gasolina" );
         let gasto5 = new CrearGasto("Seguro hogar", valor5, "2021-09-26", "casa", "seguros" );
         let gasto6 = new CrearGasto("Seguro coche", valor6, "2021-10-06", "transporte", "seguros" );
+
         anyadirGasto(gasto1);
         anyadirGasto(gasto2);
         anyadirGasto(gasto3);
@@ -248,9 +246,10 @@ export {
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
 
-      let aux = filtrarGastos({fechaDesde: "2021-09-15", fechaHasta: "2021-10-06", valorMaximo: 150});
-      console.log(aux);  */
-       
+      let aux = filtrarGastos({etiquetasTiene: ["comida", "gasolina"]});
+      console.log(aux.length);
+      console.log(aux);      
+         */
        
        
        
