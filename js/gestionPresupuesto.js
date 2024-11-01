@@ -106,7 +106,6 @@ function CrearGasto(descripcion, valor, fecha = Date.now(), ...etiquetas) { // V
 
 }
 
-
 function listarGastos() {
     return gastos;
 }
