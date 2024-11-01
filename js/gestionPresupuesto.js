@@ -137,94 +137,92 @@ function calcularBalance() {
     return presupuesto - calcularTotalGastos();
 }
 
-function filtrarGastos(parametros) {
+function filtrarGastos(parametros) { // parametros es un objeto con las siguientes propiedades fechaDesde, fechaHasta, valorMinimo, valorMaximo, descripcionContiene, etiquetasTiene.
 
-    if (Object.keys(parametros).length == 0) return gastos;
 
-    return gastos.filter(function (gasto) {
+    if (Object.keys(parametros).length == 0) return gastos; // Si no entra ningun parámetros devolvemos todos los gastos.
+
+    return gastos.filter(function (gasto) { // funcion filter recorre todos los gastos y aplica los criterios de filtrado.
 
         let resultado = true;
 
         //FECHAS
-        if (parametros.fechaDesde !== undefined || parametros.fechaHasta !== undefined) {
+        if (parametros.fechaDesde !== undefined || parametros.fechaHasta !== undefined) { // Si no se aporta fechas, pasamos al resto de criterios.
 
-            let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde);
-            let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);
+            let fechaDesdeTimestamp = Date.parse(parametros.fechaDesde); //Convertir a timestamp.
+            let fechaHastaTimestamp = Date.parse(parametros.fechaHasta);//Convertir a timestamp.
 
-            if (gasto.fecha < fechaDesdeTimestamp) return false;
-            if (gasto.fecha > fechaHastaTimestamp) return false;
-            if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true;
+            if (gasto.fecha < fechaDesdeTimestamp) return false; // Si el gasto se registra con una fecha inferior a fechaDesde devolvemos false.
+            if (gasto.fecha > fechaHastaTimestamp) return false; // Si el gasto se registra con una fecha superior a fechaHasta devolvemos false.
+            if (gasto.fecha >= fechaDesdeTimestamp && gasto.fecha <= fechaHastaTimestamp) resultado = true; // Si el gasto se registra con entre las fechas fechaDesde y fechaHasta devolvemos verdadero.
         }
 
         // VALOR
-        if (parametros.valorMinimo !== undefined || parametros.valorMaximo !== undefined) {
+        if (parametros.valorMinimo !== undefined || parametros.valorMaximo !== undefined) { // Si no se aporta valores min y max pasamos al resto de criterios.
+            // Con los valores max y min, realizamos lo mismo que con las fechas.
             if (gasto.valor < parametros.valorMinimo) return false;
             if (gasto.valor > parametros.valorMaximo) return false;
             if (gasto.valor >= parametros.valorMinimo && gasto.valor <= parametros.valorMaximo) resultado = true;
         }
 
         //DESCRIPCIÓN
-        if (parametros.descripcionContiene !== undefined) {
+        if (parametros.descripcionContiene !== undefined) { // Si no se aporta descrición pasamos al siguietne criterio.
 
+            // Convertimos todo a minúsculas para realizar la comparación que no se distingan entre mayúsculas y minúsculas.
             let gastoDescripMinus = gasto.descripcion.toLowerCase();
             let parametroDescripContiene = parametros.descripcionContiene.toLowerCase();
 
-            if (gastoDescripMinus.includes(parametroDescripContiene)) {
+            if (gastoDescripMinus.includes(parametroDescripContiene)) { // Comprobamos con includes si la descripcion del gasto está dentro de descripcionContiene.
                 resultado = true;
             }
             else {
-                return false;
+                resultado = false;
             }
         }
 
         //ETIQUETAS
-        if (parametros.etiquetasTiene !== undefined) {
+        if (parametros.etiquetasTiene !== undefined) { // Si no se aporta etiquetas, no se comprueba el criterio.
 
-           for (let eParametro of parametros.etiquetasTiene) {
-            
-                if(gasto.etiquetas.includes(eParametro)) {
-                    resultado=true;
-                    break;
+            for (let eParametro of parametros.etiquetasTiene) { //Recorremos todas las etiquetas y comprobamos que si están en las etiquetas del gasto.
+
+                if (gasto.etiquetas.includes(eParametro)) {
+                    resultado = true;
+                    break; // En cuanto coincida una etiqueta asignamos true y salimos del for ... of.
                 }
-                else{
-                    resultado = false;
+                else {
+                    resultado = false; // Si coincide seguimos buscando por todas las etiquetas y asignamos false.
                 }
-           }
+            }
         }
 
-        return resultado;
+        return resultado; // Y por ultimo devolvemos resutaldo.
 
     });
-
-
-
 }
 
-function agruparGastos(periodo="mes",etiquetas=[],fechaDesde,fechaHasta=new Date().toISOString().split("T")[0]) { 
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString().split("T")[0]) {
+// Parametros por defecto.
 
-    let parametrosFiltrados ={
-        fechaDesde:fechaDesde,
-        fechaHasta:fechaHasta,
-        etiquetasTiene:etiquetas
+    let parametrosFiltrados = { // Como la función filtrarGasto recibe un un objeto como parametro, creamos un objeto para todos los paramentros
+        fechaDesde: fechaDesde,
+        fechaHasta: fechaHasta,
+        etiquetasTiene: etiquetas
     }
 
     let gastosFiltrados = filtrarGastos(parametrosFiltrados);
 
-    return gastosFiltrados.reduce(function(acc,gasto){ // reduce recibe dos parámetros: una función y un objeto vacío.
+    return gastosFiltrados.reduce(function (acc, gasto) { // reduce recibe dos parámetros: una función y un objeto vacío.
 
         let perAgrupacion = gasto.obtenerPeriodoAgrupacion(periodo);
 
-        acc[perAgrupacion]= acc[perAgrupacion] || 0;
-        acc[perAgrupacion]+= gasto.valor;
+        acc[perAgrupacion] = acc[perAgrupacion] || 0;
+        acc[perAgrupacion] += gasto.valor;
 
         return acc;
 
-    },{});
+    }, {});
 
 }
-
-
-
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -242,36 +240,9 @@ export {
     agruparGastos
 }
 
-//PRUEBAS
 
-  /* let valor1 = 23.44,
-            valor2 = 12.88,
-            valor3 = 22.80,
-            valor4 = 62.22,
-            valor5 = 304.75,
-            valor6 = 195.88;
 
-        let gasto1 = new CrearGasto("Compra carne", valor1, "2021-10-06", "casa", "comida" );
-        let gasto2 = new CrearGasto("Compra fruta y verdura", valor2, "2021-09-06", "supermercado", "comida" );
-        let gasto3 = new CrearGasto("Bonobús", valor3, "2020-05-26", "transporte" );
-        let gasto4 = new CrearGasto("Gasolina", valor4, "2021-10-08", "transporte", "gasolina" );
-        let gasto5 = new CrearGasto("Seguro hogar", valor5, "2021-09-26", "casa", "seguros" );
-        let gasto6 = new CrearGasto("Seguro coche", valor6, "2021-10-06", "transporte", "seguros" );
 
-        anyadirGasto(gasto1);
-        anyadirGasto(gasto2);
-        anyadirGasto(gasto3);
-        anyadirGasto(gasto4);
-        anyadirGasto(gasto5);
-        anyadirGasto(gasto6);
 
-      let aux = agruparGastos("mes")
-     
-      console.log(aux);       */
-         
-       
-       
-       
-        
 
 
