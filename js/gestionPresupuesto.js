@@ -212,7 +212,12 @@ function agruparGastos(periodo="mes",etiquetas=[],fechaDesde,fechaHasta=new Date
 
     return gastosFiltrados.reduce(function(acc,gasto){ // reduce recibe dos parámetros: una función y un objeto vacío.
 
-        
+        let perAgrupacion = gasto.obtenerPeriodoAgrupacion(periodo);
+
+        acc[perAgrupacion]= acc[perAgrupacion] || 0;
+        acc[perAgrupacion]+= gasto.valor;
+
+        return acc;
 
     },{});
 
@@ -239,7 +244,7 @@ export {
 
 //PRUEBAS
 
-  let valor1 = 23.44,
+  /* let valor1 = 23.44,
             valor2 = 12.88,
             valor3 = 22.80,
             valor4 = 62.22,
@@ -262,7 +267,7 @@ export {
 
       let aux = agruparGastos("mes")
      
-      console.log(aux);      
+      console.log(aux);       */
          
        
        
