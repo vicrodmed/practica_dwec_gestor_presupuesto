@@ -22,3 +22,11 @@ presupuesto.anyadirGasto(gasto6);
 
 web.mostrarDatoEnID('gastos-totales', "Gastos Totales: " + presupuesto.calcularTotalGastos()+" €");
 web.mostrarDatoEnID('balance-total',"Balance total: " + presupuesto.calcularBalance()+" €")
+
+for (let e of presupuesto.listarGastos()) {
+    web.mostrarGastoWeb('listado-gastos-completo',e);
+}
+
+
+
+
