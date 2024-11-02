@@ -21,3 +21,4 @@ presupuesto.anyadirGasto(gasto5);
 presupuesto.anyadirGasto(gasto6);
 
 web.mostrarDatoEnID('gastos-totales', "Gastos Totales: " + presupuesto.calcularTotalGastos()+" €");
+web.mostrarDatoEnID('balance-total',"Balance total: " + presupuesto.calcularBalance()+" €")
