@@ -1,13 +1,13 @@
-function mostrarDatoEnID (idElemento,valor){
+function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
-    elemento.textContent=valor;
+    elemento.textContent = valor;
 }
 
-function mostrarGastoWeb (idElemento, gasto){
+function mostrarGastoWeb(idElemento, gasto) {
 
 }
 
-function mostrarGastosAgrupadosWeb (idElemento,agrup,periodo){
+function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
 
 }
 
