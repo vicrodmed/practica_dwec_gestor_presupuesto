@@ -1,5 +1,5 @@
 import * as presupuesto from './gestionPresupuesto.js'
-import * as web from './gestionPresupuesto.js'
+import * as web from './gestionPresupuestoWeb.js'
 
 presupuesto.actualizarPresupuesto(1500);
-web.mostrarDatoEnId(presupuesto.mostrarPresupuesto(),'presupuesto');
+web.mostrarDatoEnID('presupuesto',presupuesto.mostrarPresupuesto());
