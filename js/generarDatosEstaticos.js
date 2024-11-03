@@ -60,7 +60,13 @@ for (let e of gastoMayor200EurosSeguro) {
     web.mostrarGastoWeb('listado-gastos-filtrado-3',e);
 }
 
+//Mostrar el listado de gastos que tengan las etiquetas comida o transporte de menos de 50€ en div#listado-gastos-filtrado-4 (funciones filtrarGastos y mostrarGastoWeb)
 
+let gastoMenos50EurosConEtiquetas = presupuesto.filtrarGastos({valorMaximo:50,etiquetasTiene:["comida","transporte"]});
+
+for (let e of gastoMenos50EurosConEtiquetas) {
+    web.mostrarGastoWeb('listado-gastos-filtrado-4',e);
+}
 
 
 
