@@ -53,9 +53,6 @@ for (let e of gastoMayor50Euros) {
 
 let gastoMayor200EurosSeguro = presupuesto.filtrarGastos({valorMinimo: 200,etiquetasTiene:["seguros"]});
 
-console.log(gastoMayor200EurosSeguro);
-console.log(gastoMayor200EurosSeguro.length);
-
 for (let e of gastoMayor200EurosSeguro) {
     web.mostrarGastoWeb('listado-gastos-filtrado-3',e);
 }
@@ -67,6 +64,14 @@ let gastoMenos50EurosConEtiquetas = presupuesto.filtrarGastos({valorMaximo:50,et
 for (let e of gastoMenos50EurosConEtiquetas) {
     web.mostrarGastoWeb('listado-gastos-filtrado-4',e);
 }
+
+//Mostrar el total de gastos agrupados por día en div#agrupacion-dia (funciones agruparGastos y mostrarGastosAgrupadosWeb)
+
+let gastosAgrupadosPorDia =presupuesto.agruparGastos("dia");
+
+web.mostrarGastosAgrupadosWeb('agrupacion-dia',gastosAgrupadosPorDia,"dia");
+
+
 
 
 
