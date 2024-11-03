@@ -73,6 +73,9 @@ web.mostrarGastosAgrupadosWeb('agrupacion-dia', gastosAgrupadosPorDia, "dia");
 let gastoAgrupadosPorMes = presupuesto.agruparGastos("mes");
 web.mostrarGastosAgrupadosWeb('agrupacion-mes',gastoAgrupadosPorMes,"mes");
 
+let gastoAgrupadosPorAnyo = presupuesto.agruparGastos("anyo");
+web.mostrarGastosAgrupadosWeb('agrupacion-anyo',gastoAgrupadosPorAnyo,"anyo");
+
 
 
 
