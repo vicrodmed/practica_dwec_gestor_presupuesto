@@ -182,9 +182,12 @@ function filtrarGastos(parametros) { // parametros es un objeto con las siguient
         //ETIQUETAS
         if (parametros.etiquetasTiene !== undefined) { // Si no se aporta etiquetas, no se comprueba el criterio.
 
-            for (let eParametro of parametros.etiquetasTiene) { //Recorremos todas las etiquetas y comprobamos que si están en las etiquetas del gasto.
+            //ERROR DETECTADO: NO se había hecho la comparación de maneta que no se distingan mayúsculas de minúsculas.Corrección:
+            let parametroEtiquetasMinus = parametros.etiquetasTiene.map(e => e.toLowerCase());
+            let etiquetasGastoMinus = gasto.etiquetas.map(e =>e.toLowerCase());
 
-                if (gasto.etiquetas.includes(eParametro)) {
+            for (let e of parametroEtiquetasMinus) { //Recorremos todas las etiquetas pasadas por parametro y comprobamos que si están en las etiquetas del gasto.
+                if (etiquetasGastoMinus.includes(e)) {
                     resultado = true;
                     break; // En cuanto coincida una etiqueta asignamos true y salimos del for ... of.
                 }
@@ -195,7 +198,6 @@ function filtrarGastos(parametros) { // parametros es un objeto con las siguient
         }
 
         return resultado; // Y por ultimo devolvemos resutaldo.
-
     });
 }
 
@@ -238,7 +240,6 @@ export {
     filtrarGastos,
     agruparGastos
 }
-
 
 
 
