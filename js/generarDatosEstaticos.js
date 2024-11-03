@@ -25,51 +25,53 @@ presupuesto.anyadirGasto(gasto5);
 presupuesto.anyadirGasto(gasto6);
 
 //Mostrar los gastos totales en div#gastos-totales (funciones calcularTotalGastos y mostrarDatoEnId)
-web.mostrarDatoEnID('gastos-totales', "Gastos Totales: " + presupuesto.calcularTotalGastos()+" €");
+web.mostrarDatoEnID('gastos-totales', "Gastos Totales: " + presupuesto.calcularTotalGastos() + " €");
 
 //Mostrar el balance total en div#balance-total (funciones calcularBalance y mostrarDatoEnId)
-web.mostrarDatoEnID('balance-total',"Balance total: " + presupuesto.calcularBalance()+" €");
+web.mostrarDatoEnID('balance-total', "Balance total: " + presupuesto.calcularBalance() + " €");
 
 //Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
 for (let e of presupuesto.listarGastos()) {
-    web.mostrarGastoWeb('listado-gastos-completo',e);
+    web.mostrarGastoWeb('listado-gastos-completo', e);
 }
 
 //Mostrar el listado de gastos realizados en septiembre de 2021 en div#listado-gastos-filtrado-1 (funciones filtrarGastos y mostrarGastoWeb)
-let gastoSep2021 = presupuesto.filtrarGastos({fechaDesde:"2021-09-01",fechaHasta:"2021-09-30"});
+let gastoSep2021 = presupuesto.filtrarGastos({ fechaDesde: "2021-09-01", fechaHasta: "2021-09-30" });
 
 for (let e of gastoSep2021) {
-    web.mostrarGastoWeb('listado-gastos-filtrado-1',e);
+    web.mostrarGastoWeb('listado-gastos-filtrado-1', e);
 }
 
 //Mostrar el listado de gastos de más de 50€ en div#listado-gastos-filtrado-2 (funciones filtrarGastos y mostrarGastoWeb)
-let gastoMayor50Euros = presupuesto.filtrarGastos({valorMinimo: 50});
+let gastoMayor50Euros = presupuesto.filtrarGastos({ valorMinimo: 50 });
 
 for (let e of gastoMayor50Euros) {
-    web.mostrarGastoWeb('listado-gastos-filtrado-2',e);
+    web.mostrarGastoWeb('listado-gastos-filtrado-2', e);
 }
 
 //Mostrar el listado de gastos de más de 200€ con etiqueta seguros en div#listado-gastos-filtrado-3 (funciones filtrarGastos y mostrarGastoWeb)
 
-let gastoMayor200EurosSeguro = presupuesto.filtrarGastos({valorMinimo: 200,etiquetasTiene:["seguros"]});
+let gastoMayor200EurosSeguro = presupuesto.filtrarGastos({ valorMinimo: 200, etiquetasTiene: ["seguros"] });
 
 for (let e of gastoMayor200EurosSeguro) {
-    web.mostrarGastoWeb('listado-gastos-filtrado-3',e);
+    web.mostrarGastoWeb('listado-gastos-filtrado-3', e);
 }
 
 //Mostrar el listado de gastos que tengan las etiquetas comida o transporte de menos de 50€ en div#listado-gastos-filtrado-4 (funciones filtrarGastos y mostrarGastoWeb)
 
-let gastoMenos50EurosConEtiquetas = presupuesto.filtrarGastos({valorMaximo:50,etiquetasTiene:["comida","transporte"]});
+let gastoMenos50EurosConEtiquetas = presupuesto.filtrarGastos({ valorMaximo: 50, etiquetasTiene: ["comida", "transporte"] });
 
 for (let e of gastoMenos50EurosConEtiquetas) {
-    web.mostrarGastoWeb('listado-gastos-filtrado-4',e);
+    web.mostrarGastoWeb('listado-gastos-filtrado-4', e);
 }
 
 //Mostrar el total de gastos agrupados por día en div#agrupacion-dia (funciones agruparGastos y mostrarGastosAgrupadosWeb)
 
-let gastosAgrupadosPorDia =presupuesto.agruparGastos("dia");
+let gastosAgrupadosPorDia = presupuesto.agruparGastos("dia");
+web.mostrarGastosAgrupadosWeb('agrupacion-dia', gastosAgrupadosPorDia, "dia");
 
-web.mostrarGastosAgrupadosWeb('agrupacion-dia',gastosAgrupadosPorDia,"dia");
+let gastoAgrupadosPorMes = presupuesto.agruparGastos("mes");
+web.mostrarGastosAgrupadosWeb('agrupacion-mes',gastoAgrupadosPorMes,"mes");
 
 
 
