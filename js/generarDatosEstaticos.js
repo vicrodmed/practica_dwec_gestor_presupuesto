@@ -28,5 +28,15 @@ for (let e of presupuesto.listarGastos()) {
 }
 
 
+let gastoSep2021 = presupuesto.filtrarGastos({fechaDesde:"2021-09-01",fechaHasta:"2021-09-30"});
+
+for (let e of gastoSep2021) {
+    web.mostrarGastoWeb('listado-gastos-filtrado-1',e);
+}
+
+
+
+
+
 
 
