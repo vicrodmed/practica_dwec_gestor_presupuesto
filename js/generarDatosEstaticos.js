@@ -7,7 +7,7 @@ presupuesto.actualizarPresupuesto(1500);
 web.mostrarDatoEnID('presupuesto', presupuesto.mostrarPresupuesto());
 
 //Crear los siguientes gastos (función crearGasto):
-let valor1 = 23.44, valor2 = 12.88, valor3 = 22.80, valor4 = 62.22, valor5 = 304.75, valor6 = 195.88;
+let valor1 = 23.44, valor2 = 14.25, valor3 = 18.60, valor4 = 62.42, valor5 = 206.45, valor6 = 195.78;
 
 let gasto1 = new presupuesto.CrearGasto("Compra carne", valor1, "2021-10-06", "casa", "comida");
 let gasto2 = new presupuesto.CrearGasto("Compra fruta y verdura", valor2, "2021-09-06", "supermercado", "comida");
@@ -25,7 +25,7 @@ presupuesto.anyadirGasto(gasto5);
 presupuesto.anyadirGasto(gasto6);
 
 //Mostrar los gastos totales en div#gastos-totales (funciones calcularTotalGastos y mostrarDatoEnId)
-web.mostrarDatoEnID('gastos-totales', "Gastos Totales: " + presupuesto.calcularTotalGastos() + " €");
+web.mostrarDatoEnID('gastos-totales', presupuesto.calcularTotalGastos());
 
 //Mostrar el balance total en div#balance-total (funciones calcularBalance y mostrarDatoEnId)
 web.mostrarDatoEnID('balance-total', "Balance total: " + presupuesto.calcularBalance() + " €");
@@ -76,7 +76,7 @@ web.mostrarGastosAgrupadosWeb('agrupacion-mes', gastoAgrupadosPorMes, "mes");
 let gastoAgrupadosPorAnyo = presupuesto.agruparGastos("anyo");
 web.mostrarGastosAgrupadosWeb('agrupacion-anyo', gastoAgrupadosPorAnyo, "anyo");
 
-//Modificación para hacer un push y que se lanze el test
+
 
 
 
