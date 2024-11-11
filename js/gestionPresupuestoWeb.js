@@ -132,7 +132,7 @@ function anyadirgasto (){
     let etiquetasConComas = prompt("Introduzcas las etiquetas separadas por comas: ");
     let arrayEtiquetas = etiquetasConComas.split(',');
 
-    let nuevoGasto = new presupuesto.CrearGasto(descripcion,valor,fecha,...arrayEtiquetas);
+    let nuevoGasto = new presupuesto.CrearGasto(descripcion,valor,fecha,...arrayEtiquetas);// rest parameter: arrayEtiquetas.
     presupuesto.anyadirGasto(nuevoGasto);
     repintar();
 }
