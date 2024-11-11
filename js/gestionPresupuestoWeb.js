@@ -3,10 +3,8 @@ import * as presupuesto from './gestionPresupuesto.js'
 let botonActualizarPresupuesto = document.getElementById('actualizarpresupuesto');
 botonActualizarPresupuesto.addEventListener("click",actualizarPresupuestoWeb);
 
-
-
-
-
+let botonAnyadirgasto = document.getElementById('anyadirgasto');
+botonAnyadirgasto.addEventListener("click",anyadirgasto);
 
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
@@ -124,6 +122,18 @@ function repintar () { // SIN EXPORTAR DE MOMENTO
 function actualizarPresupuestoWeb (){
     let valorNuevoPresupuesto =Number( prompt("Introduzca el nuevo presupuesto: "));
     presupuesto.actualizarPresupuesto(valorNuevoPresupuesto);
+    repintar();
+}
+
+function anyadirgasto (){
+    let descripcion = prompt("Introduzca la descripción del gasto: ");
+    let valor = Number(prompt("Introduzca el valor del gasto: "));
+    let fecha = prompt("Introduzca la fecha del gasto (yyyy-mm-dd): ");
+    let etiquetasConComas = prompt("Introduzcas las etiquetas separadas por comas: ");
+    let arrayEtiquetas = etiquetasConComas.split(',');
+
+    let nuevoGasto = new presupuesto.CrearGasto(descripcion,valor,fecha,...arrayEtiquetas);
+    presupuesto.anyadirGasto(nuevoGasto);
     repintar();
 }
 
