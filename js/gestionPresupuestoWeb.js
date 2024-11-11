@@ -94,6 +94,25 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     elemento.append(divAgrupacion); //Finalmente añadimos al final del elemento pasado por parámetro.
 }
 
+function repintar () {
+    //Mostrar el presupuesto en div#presupuesto (funciones mostrarPresupuesto y mostrarDatoEnId)
+    mostrarDatoEnID('presupuesto',presupuesto.mostrarPresupuesto());
+
+    //Mostrar los gastos totales en div#gastos-totales (funciones calcularTotalGastos y mostrarDatoEnId)
+    mostrarDatoEnID('gastos-totales', "Total gastos: " + presupuesto.calcularTotalGastos() + " €");
+
+    //Mostrar el balance total en div#balance-total (funciones calcularBalance y mostrarDatoEnId)
+    mostrarDatoEnID('balance-total', "Balance total: " + presupuesto.calcularBalance() + " €");
+
+    //Borrar el contenido de div#listado-gastos-completo, para que el paso siguiente no duplique la información. Puedes utilizar innerHTML para borrar el contenido de dicha capa.
+    document.getElementById('listado-gastos-completo').innerHTML="";
+
+    //Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
+    for (let e of presupuesto.listarGastos()) {
+        mostrarGastoWeb('listado-gastos-completo', e);
+    }
+}
+
 export {
     mostrarDatoEnID,
     mostrarGastoWeb,
