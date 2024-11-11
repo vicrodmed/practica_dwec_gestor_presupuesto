@@ -1,5 +1,13 @@
 import * as presupuesto from './gestionPresupuesto.js'
 
+let botonActualizarPresupuesto = document.getElementById('actualizarpresupuesto');
+botonActualizarPresupuesto.addEventListener("click",actualizarPresupuestoWeb);
+
+
+
+
+
+
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
@@ -94,7 +102,7 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     elemento.append(divAgrupacion); //Finalmente añadimos al final del elemento pasado por parámetro.
 }
 
-function repintar () {
+function repintar () { // SIN EXPORTAR DE MOMENTO
     //Mostrar el presupuesto en div#presupuesto (funciones mostrarPresupuesto y mostrarDatoEnId)
     mostrarDatoEnID('presupuesto',presupuesto.mostrarPresupuesto());
 
@@ -112,6 +120,14 @@ function repintar () {
         mostrarGastoWeb('listado-gastos-completo', e);
     }
 }
+
+function actualizarPresupuestoWeb (){
+    let valorNuevoPresupuesto =Number( prompt("Introduzca el nuevo presupuesto: "));
+    presupuesto.actualizarPresupuesto(valorNuevoPresupuesto);
+    repintar();
+}
+
+
 
 export {
     mostrarDatoEnID,
