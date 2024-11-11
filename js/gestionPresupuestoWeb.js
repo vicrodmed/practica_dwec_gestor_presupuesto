@@ -1,3 +1,5 @@
+import * as presupuesto from './gestionPresupuesto.js'
+
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
