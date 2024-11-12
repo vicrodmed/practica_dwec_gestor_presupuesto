@@ -47,16 +47,23 @@ function mostrarGastoWeb(idElemento, gasto) {
         divGastoEtiquetas.append(spanEtiqueta);
     }
 
-    //Añadir botón editar
+    // Botón Editar
     let botonEditar =document.createElement('button');
     botonEditar.textContent="Editar";
     botonEditar.className="gasto-editar"
     divGasto.append(botonEditar);
+    let manejadorBotonEditar = new EditarHandle();
+    manejadorBotonEditar.gasto = gasto;
+    botonEditar.addEventListener("click",manejadorBotonEditar);
 
-    let manejador = new EditarHandle();
-    manejador.gasto = gasto;
-    botonEditar.addEventListener("click",manejador);
-
+    //Botón Borrar
+    let botonBorrar =document.createElement('button');
+    botonBorrar.textContent="Borrar";
+    botonBorrar.className="gasto-borrar"
+    divGasto.append(botonBorrar);
+    let manejadorBotonBorrar = new BorrarHandle();
+    manejadorBotonBorrar.gasto = gasto;
+    botonBorrar.addEventListener("click",manejadorBotonBorrar);
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
     elemento.append(document.createElement('br')); // Añadimos al final un linea en blanco para mejor la visibilidad de cada gasto.
@@ -149,7 +156,6 @@ function anyadirgasto (){
     repintar();
 }
 
-//Función constructora
 function EditarHandle() {
     this.handleEvent = function () {
 
@@ -165,6 +171,15 @@ function EditarHandle() {
 
         etiquetasSeparadas.forEach(e => this.gasto.anyadirEtiquetas(e));
 
+        repintar();
+    }
+}
+
+function BorrarHandle(){
+    this.handleEvent = function(){
+        console.log(this.gasto);
+        
+        presupuesto.borrarGasto(this.gasto.id);
         repintar();
     }
 }
