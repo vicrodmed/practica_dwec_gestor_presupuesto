@@ -6,6 +6,11 @@ botonActualizarPresupuesto.addEventListener("click",actualizarPresupuestoWeb);
 let botonAnyadirgasto = document.getElementById('anyadirgasto');
 botonAnyadirgasto.addEventListener("click",anyadirgasto);
 
+
+
+
+
+
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
@@ -45,6 +50,12 @@ function mostrarGastoWeb(idElemento, gasto) {
         spanEtiqueta.textContent = "#" + e + " ";
         divGastoEtiquetas.append(spanEtiqueta);
     }
+
+    //Añadir botón editar
+    let botonEditar =document.createElement('button');
+    botonEditar.textContent="Editar";
+    botonEditar.className="gasto-editar"
+    divGasto.append(botonEditar);
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
     elemento.append(document.createElement('br')); // Añadimos al final un linea en blanco para mejor la visibilidad de cada gasto.
@@ -137,7 +148,21 @@ function anyadirgasto (){
     repintar();
 }
 
+//Función constructora
+function EditarHandle() {
+    this.handleEvent = function () {
 
+        this.gasto.actualizarDescripcion(prompt("Modificar descripción del gasto? ", this.gasto.descripcion));
+        this.gasto.actualizarValor(Number(prompt("Modificar valor del gasto? ", this.gasto.valor)));
+        this.gasto.fecha(prompt("Modificar fecha del gasto? (aaaa-mm-dd)? ", this.gasto.fecha))
+
+        let arrayEtiquetas = this.gasto.etiquetas;
+        let etiquetasTexto = arrayEtiquetas.join(",");
+
+        let etiquetasConComas = prompt("Modificar etiquetas del gasto? ",etiquetasTexto);
+        this.gasto.actualizarEtiquetas(etiquetasConComas.split(','));
+    }
+}
 
 export {
     mostrarDatoEnID,
