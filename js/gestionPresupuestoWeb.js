@@ -44,6 +44,10 @@ function mostrarGastoWeb(idElemento, gasto) {
         let spanEtiqueta = document.createElement('span');
         spanEtiqueta.className = 'gasto-etiquetas-etiqueta';
         spanEtiqueta.textContent = "#" + e + " ";
+        let manejadorEtiqueta = new BorrarEtiquetasHandle();
+        manejadorEtiqueta.gasto = gasto;
+        manejadorEtiqueta.etiqueta = e;
+        spanEtiqueta.addEventListener("click",manejadorEtiqueta);
         divGastoEtiquetas.append(spanEtiqueta);
     }
 
@@ -177,9 +181,14 @@ function EditarHandle() {
 
 function BorrarHandle(){
     this.handleEvent = function(){
-        console.log(this.gasto);
-        
         presupuesto.borrarGasto(this.gasto.id);
+        repintar();
+    }
+}
+
+function BorrarEtiquetasHandle (){
+    this.handleEvent = function (){
+        this.gasto.borrarEtiquetas(this.etiqueta);
         repintar();
     }
 }
