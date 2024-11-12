@@ -7,10 +7,6 @@ let botonAnyadirgasto = document.getElementById('anyadirgasto');
 botonAnyadirgasto.addEventListener("click",anyadirgasto);
 
 
-
-
-
-
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
@@ -56,6 +52,11 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonEditar.textContent="Editar";
     botonEditar.className="gasto-editar"
     divGasto.append(botonEditar);
+
+    let manejador = new EditarHandle();
+    manejador.gasto = gasto;
+    botonEditar.addEventListener("click",manejador);
+
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
     elemento.append(document.createElement('br')); // Añadimos al final un linea en blanco para mejor la visibilidad de cada gasto.
@@ -154,13 +155,17 @@ function EditarHandle() {
 
         this.gasto.actualizarDescripcion(prompt("Modificar descripción del gasto? ", this.gasto.descripcion));
         this.gasto.actualizarValor(Number(prompt("Modificar valor del gasto? ", this.gasto.valor)));
-        this.gasto.fecha(prompt("Modificar fecha del gasto? (aaaa-mm-dd)? ", this.gasto.fecha))
+        this.gasto.actualizarFecha(prompt("Modificar fecha del gasto? (aaaa-mm-dd)? ", new Date(this.gasto.fecha).toISOString().split('T')[0]));
 
         let arrayEtiquetas = this.gasto.etiquetas;
         let etiquetasTexto = arrayEtiquetas.join(",");
 
         let etiquetasConComas = prompt("Modificar etiquetas del gasto? ",etiquetasTexto);
-        this.gasto.actualizarEtiquetas(etiquetasConComas.split(','));
+        let etiquetasSeparadas = etiquetasConComas.split(',');
+
+        etiquetasSeparadas.forEach(e => this.gasto.anyadirEtiquetas(e));
+
+        repintar();
     }
 }
 
