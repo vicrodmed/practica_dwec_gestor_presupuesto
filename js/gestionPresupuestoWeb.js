@@ -204,6 +204,14 @@ function BorrarEtiquetasHandle() {
     }
 }
 
+function CancelarFormulario(){
+    this.handleEvent=function(){
+        this.formulario.remove();
+        let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
+        botonAnyadirGastoFormulario.disabled=false;
+    }
+}
+
 function nuevoGastoWebFomulario() {
     // Desactivar el boton id anyadirgasto-formulario
     let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
@@ -214,7 +222,7 @@ function nuevoGastoWebFomulario() {
     let divControlesPrincipales = document.getElementById('controlesprincipales');
     divControlesPrincipales.append(plantillaFormulario);
 
-    //Manejador evento submit
+    //Manejador evento submit del formulario
     formulario.addEventListener("submit", function (event) {
         
         event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
@@ -241,9 +249,11 @@ function nuevoGastoWebFomulario() {
         formulario.remove();
     });
 
-    
-    
-   
+    //Manejador evento click boton cancelar del formulario
+    let botonCancelar = formulario.querySelector("button.cancelar");
+    let manejadorBotonCancelar = new CancelarFormulario();
+    manejadorBotonCancelar.formulario=formulario;
+    botonCancelar.addEventListener("click",manejadorBotonCancelar);
     
 }
 
