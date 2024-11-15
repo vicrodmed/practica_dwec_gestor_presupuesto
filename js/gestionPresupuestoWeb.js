@@ -9,6 +9,10 @@ botonActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 let botonAnyadirgasto = document.getElementById('anyadirgasto');
 botonAnyadirgasto.addEventListener("click", anyadirgasto);
 
+// Añadimos funcion manejadora del boton Añadir formulario
+let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
+botonAnyadirGastoFormulario.addEventListener("click",nuevoGastoWebFomulario);
+
 
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
@@ -198,6 +202,49 @@ function BorrarEtiquetasHandle() {
         this.gasto.borrarEtiquetas(this.etiqueta);
         repintar();
     }
+}
+
+function nuevoGastoWebFomulario() {
+    // Desactivar el boton id anyadirgasto-formulario
+    let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
+    botonAnyadirGastoFormulario.disabled=true;
+    //Cargamos la plantilla del formulario y la añadimos
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+    let formulario = plantillaFormulario.querySelector("form");
+    let divControlesPrincipales = document.getElementById('controlesprincipales');
+    divControlesPrincipales.append(plantillaFormulario);
+
+    //Manejador evento submit
+    formulario.addEventListener("submit", function (event) {
+        
+        event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
+        let form = event.currentTarget;// Accedemos al formulario que ha activado el evento.
+        let elements = form.elements;
+
+        // Obtenemos los valores del formulario
+        let descripcion = form.elements["descripcion"].value;
+        let valor = form.elements["valor"].value;
+        let fecha = new Date(form.elements["fecha"].value).toISOString().split('T')[0];
+        let etiquetasFormArray = form.elements["etiquetas"].value.split(",");
+
+        // Creamos el gasto
+        let gasto = new presupuesto.CrearGasto(descripcion,Number(valor),fecha);
+        // Añadimos las equiquetas
+        etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
+        // Añadimos el gasto
+        presupuesto.anyadirGasto(gasto);
+        // Repitamos para actualizar el listado de gastos completos
+        repintar();
+        // Activamos el botón el boton id anyadirgasto-formulario
+        botonAnyadirGastoFormulario.disabled=false;
+        // Eliminamos el formulario
+        formulario.remove();
+    });
+
+    
+    
+   
+    
 }
 
 export {
