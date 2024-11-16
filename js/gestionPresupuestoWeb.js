@@ -81,9 +81,13 @@ function mostrarGastoWeb(idElemento, gasto) {
 
     //Botón EditarFormulario
     let botonEditarFormulario = document.createElement("button");
-    botonEditarFormulario.textContent="Editar (formulario)";
+    botonEditarFormulario.textContent="Editar(formulario)";
     botonEditarFormulario.className="gasto-editar-formulario";
     divGasto.append(botonEditarFormulario);
+        //Manejador y asociación con el gasto
+    let manejadorBotonEditarFormulario = new EditarHandleFormulario();
+    manejadorBotonEditarFormulario.gasto =gasto;
+    botonEditarFormulario.addEventListener("click",manejadorBotonEditarFormulario);
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
     elemento.append(document.createElement('br')); // Añadimos al final un linea en blanco para mejor la visibilidad de cada gasto.
@@ -218,11 +222,57 @@ function CancelarFormulario(){
     }
 }
 
+function EditarHandleFormulario() {
+    this.handleEvent = function (event) {
+        console.log(this.gasto);
+        
+        //Cargamos la plantilla del formulario y la añadimos en id del gasto
+        let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+        let formulario = plantillaFormulario.querySelector("form");
+
+        let botonEditarFormulario = event.currentTarget;
+        botonEditarFormulario.disabled = true;
+
+        let divGasto = event.currentTarget.parentElement;
+        divGasto.append(plantillaFormulario);
+
+        formulario.elements["descripcion"].value = this.gasto.descripcion;
+        formulario.elements["valor"].value = Number(this.gasto.valor);
+        formulario.elements["fecha"].value = new Date(this.gasto.fecha).toISOString().split('T')[0];
+
+        let arrayEtiquetas = this.gasto.etiquetas;
+        let etiquetasTexto = arrayEtiquetas.join(",");
+        formulario.elements["etiquetas"].value = etiquetasTexto;
+
+        formulario.addEventListener("submit", function(event) {
+
+            console.log(this.gasto);
+           
+            event.preventDefault();
+            let form = event.currentTarget;
+            
+            this.gasto.actualizarDescripcion(form.elements["descripcion"].value);
+            this.gasto.actualizarValor(Number(form.elements["valor"].value));
+            console.log(form.elements["fecha"].value);
+            
+            this.gasto.actualizarFecha(form.elements["fecha"].value);
+
+            let etiquetasSeparadas = form.elements["etiquetas"].value.split(',');
+            etiquetasSeparadas.forEach(e=>this.gasto.anyadirEtiquetas(e));
+            repintar();
+
+
+
+        });
+
+    }
+}
+
 function nuevoGastoWebFomulario() {
     // Desactivar el boton id anyadirgasto-formulario
     let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
     botonAnyadirGastoFormulario.disabled=true;
-    //Cargamos la plantilla del formulario y la añadimos
+    //Cargamos la plantilla del formulario y la añadimos en id controlesprincipales
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
     let formulario = plantillaFormulario.querySelector("form");
     let divControlesPrincipales = document.getElementById('controlesprincipales');
@@ -233,7 +283,6 @@ function nuevoGastoWebFomulario() {
         
         event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
         let form = event.currentTarget;// Accedemos al formulario que ha activado el evento.
-        let elements = form.elements;
 
         // Obtenemos los valores del formulario
         let descripcion = form.elements["descripcion"].value;
