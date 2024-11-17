@@ -9,7 +9,7 @@ botonActualizarPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
 let botonAnyadirgasto = document.getElementById('anyadirgasto');
 botonAnyadirgasto.addEventListener("click", anyadirgasto);
 
-// Añadimos funcion manejadora del boton Añadir formulario
+// Añadimos funcion manejadora del boton Añadir gasto formulario
 let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
 botonAnyadirGastoFormulario.addEventListener("click", nuevoGastoWebFomulario);
 
@@ -201,9 +201,6 @@ function nuevoGastoWebFomulario() {
         // Obtenemos los valores del formulario
         let descripcion = form.elements["descripcion"].value;
         let valor = form.elements["valor"].value;
-
-        console.log(form.elements["fecha"].value);
-        
         let fecha = new Date(form.elements["fecha"].value);
         let etiquetasFormArray = form.elements["etiquetas"].value.split(",");
 
@@ -225,6 +222,7 @@ function nuevoGastoWebFomulario() {
     let botonCancelar = formulario.querySelector("button.cancelar");
     let manejadorBotonCancelar = new CancelarFormulario();
     manejadorBotonCancelar.formulario = formulario;
+    manejadorBotonCancelar.boton = botonAnyadirGastoFormulario;
     botonCancelar.addEventListener("click", manejadorBotonCancelar);
 
 }
@@ -245,10 +243,11 @@ function BorrarEtiquetasHandle() {
 }
 
 function CancelarFormulario() {
-    this.handleEvent = function () {
+    this.handleEvent = function (event) {
         this.formulario.remove();
-        let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
-        botonAnyadirGastoFormulario.disabled = false;
+        
+        this.boton.disabled = false;
+    
     }
 }
 
@@ -273,11 +272,15 @@ function EditarHandle() {
 
 function EditarHandleFormulario() {
     this.handleEvent = function (event) {
+
+        let botonEditarFormulario = event.currentTarget; // Localizamos el botón pulsado.
+        botonEditarFormulario.disabled = true; // Y el botón pulsado lo desactivamos.
     
         let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);// Creamos la plantilla del formulario.
-        let formulario = plantillaFormulario.querySelector("form"); // Guardamos una referencia al formulario creado
-        let botonEditarFormulario = event.currentTarget; // Localizamos el botón pulsado
-        botonEditarFormulario.disabled = true; // Y el botón pulsado lo desactivamos.
+        let formulario = plantillaFormulario.querySelector("form"); // Guardamos una referencia al formulario creado.
+        
+        
+        
         let divGasto = event.currentTarget.parentElement; // A través del botón pulsado localizamos localizamos su ancestro que es el div de la clase gasto
         divGasto.append(plantillaFormulario); // Y añadimos el formulario al final del div gasto.
 
@@ -298,9 +301,8 @@ function EditarHandleFormulario() {
         let botonCancelar = formulario.querySelector("button.cancelar");
         let manejadorBotonCancelar = new CancelarFormulario();
         manejadorBotonCancelar.formulario = formulario;
+        manejadorBotonCancelar.boton = botonEditarFormulario;
         botonCancelar.addEventListener("click", manejadorBotonCancelar);
-
-        botonEditarFormulario.disabled = false;
 
     }
 }
@@ -309,6 +311,8 @@ function SubmitHandleFormulario() {
     this.handleEvent = function (event) {
         event.preventDefault();
         let form = event.currentTarget;
+        console.log(form);
+        
 
         this.gasto.actualizarDescripcion(form.elements["descripcion"].value);
         this.gasto.actualizarValor(Number(form.elements["valor"].value));
