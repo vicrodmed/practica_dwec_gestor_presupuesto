@@ -59,7 +59,7 @@ function mostrarGastoWeb(idElemento, gasto) {
         divGastoEtiquetas.append(spanEtiqueta);
     }
 
-    // Botón Editar -------------------------------------------------
+    // Creación Botón Editar por cada gasto
     let botonEditar = document.createElement('button');
     botonEditar.textContent = "Editar";
     botonEditar.className = "gasto-editar"
@@ -68,9 +68,9 @@ function mostrarGastoWeb(idElemento, gasto) {
     let manejadorBotonEditar = new EditarHandle();
     manejadorBotonEditar.gasto = gasto;
     botonEditar.addEventListener("click", manejadorBotonEditar);
-    // --------------------------------------------------------------
 
-    // Botón Borrar -------------------------------------------------
+
+    // Creación de Botón Borrar para cada gasto
     let botonBorrar = document.createElement('button');
     botonBorrar.textContent = "Borrar";
     botonBorrar.className = "gasto-borrar"
@@ -79,9 +79,9 @@ function mostrarGastoWeb(idElemento, gasto) {
     let manejadorBotonBorrar = new BorrarHandle();
     manejadorBotonBorrar.gasto = gasto;
     botonBorrar.addEventListener("click", manejadorBotonBorrar);
-    // --------------------------------------------------------------
 
-    // Botón EditarFormulario ---------------------------------------
+
+    // Creación de Botón EditarFormulario para cada gasto
     let botonEditarFormulario = document.createElement("button");
     botonEditarFormulario.textContent = "Editar(formulario)";
     botonEditarFormulario.className = "gasto-editar-formulario";
@@ -90,7 +90,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     let manejadorBotonEditarFormulario = new EditarHandleFormulario();
     manejadorBotonEditarFormulario.gasto = gasto;
     botonEditarFormulario.addEventListener("click", manejadorBotonEditarFormulario);
-    // --------------------------------------------------------------
+
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
 }
@@ -221,8 +221,8 @@ function nuevoGastoWebFomulario() {
     //Manejador evento click boton cancelar del formulario
     let botonCancelar = formulario.querySelector("button.cancelar");
     let manejadorBotonCancelar = new CancelarFormulario();
-    manejadorBotonCancelar.formulario = formulario;
-    manejadorBotonCancelar.boton = botonAnyadirGastoFormulario;
+    manejadorBotonCancelar.formulario = formulario; // Propiedad formulario
+    manejadorBotonCancelar.boton = botonAnyadirGastoFormulario; // Propiedad boton
     botonCancelar.addEventListener("click", manejadorBotonCancelar);
 
 }
@@ -244,10 +244,10 @@ function BorrarEtiquetasHandle() {
 
 function CancelarFormulario() {
     this.handleEvent = function (event) {
-        this.formulario.remove();
-        
-        this.boton.disabled = false;
-    
+
+        this.formulario.remove(); // Eliminamos formulario
+        this.boton.disabled = false; // Y volvemos a activar el botón que activo el formulario.
+
     }
 }
 
@@ -270,17 +270,16 @@ function EditarHandle() {
     }
 }
 
+// Función manejadora para el evento click del botón Añadir gasto (formulario)
 function EditarHandleFormulario() {
     this.handleEvent = function (event) {
 
         let botonEditarFormulario = event.currentTarget; // Localizamos el botón pulsado.
         botonEditarFormulario.disabled = true; // Y el botón pulsado lo desactivamos.
-    
+
         let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);// Creamos la plantilla del formulario.
         let formulario = plantillaFormulario.querySelector("form"); // Guardamos una referencia al formulario creado.
-        
-        
-        
+
         let divGasto = event.currentTarget.parentElement; // A través del botón pulsado localizamos localizamos su ancestro que es el div de la clase gasto
         divGasto.append(plantillaFormulario); // Y añadimos el formulario al final del div gasto.
 
@@ -293,7 +292,7 @@ function EditarHandleFormulario() {
         formulario.elements["etiquetas"].value = etiquetasTexto;
 
         let manejadorSubmitFormulario = new SubmitHandleFormulario();
-        manejadorSubmitFormulario.gasto = this.gasto;
+        manejadorSubmitFormulario.gasto = this.gasto; // Le pasamos la referencia del gasto actual que estamos tratando.
 
         formulario.addEventListener("submit", manejadorSubmitFormulario);
 
@@ -307,17 +306,14 @@ function EditarHandleFormulario() {
     }
 }
 
+// Función manejadora para el evento submit en la edición del formulario.
 function SubmitHandleFormulario() {
     this.handleEvent = function (event) {
         event.preventDefault();
         let form = event.currentTarget;
-        console.log(form);
-        
-
         this.gasto.actualizarDescripcion(form.elements["descripcion"].value);
         this.gasto.actualizarValor(Number(form.elements["valor"].value));
         this.gasto.actualizarFecha(form.elements["fecha"].value);
-
         let etiquetasSeparadas = form.elements["etiquetas"].value.split(',');
         etiquetasSeparadas.forEach(e => this.gasto.anyadirEtiquetas(e));
         repintar();
