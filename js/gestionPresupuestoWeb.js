@@ -23,26 +23,27 @@ function mostrarDatoEnID(idElemento, valor) {
 //Función de dos parámetros que se encargará de añadir dentro del elemento HTML con id idElemento indicado una estructura HTML para el gasto que se pase como parámetro
 function mostrarGastoWeb(idElemento, gasto) {
 
-    let elemento = document.getElementById(idElemento);
-
-    let divGasto = document.createElement('div'); // Creación <div class="gasto">
+    let elemento = document.getElementById(idElemento); // Referencia para luego añadir el div de gasto
+    let divGasto = document.createElement('div'); // Creación del div para añadir el gasto <div class="gasto">
     divGasto.className = 'gasto';
 
+    //Creamos un contenedor div para cada propiedad del gasto
+    //DESCRIPCION
     let divGastoDescripcion = document.createElement('div'); // <div class="gasto-descripcion">DESCRIPCIÓN DEL GASTO</div>
     divGastoDescripcion.className = 'gasto-descripcion';
     divGastoDescripcion.textContent = gasto.descripcion;
     divGasto.append(divGastoDescripcion); //Añadimos al final de <div class="gasto"> con append
-
+    //FECHA
     let divGastoFecha = document.createElement('div');
     divGastoFecha.className = 'gasto-fecha';
     divGastoFecha.textContent = new Date(gasto.fecha).toISOString().split('T')[0];
     divGasto.append(divGastoFecha);//Añadimos al final de <div class="gasto"> con append
-
+    //VALOR
     let divGastoValor = document.createElement('div');
     divGastoValor.className = 'gasto-valor';
     divGastoValor.textContent = gasto.valor;
     divGasto.append(divGastoValor);//Añadimos al final de <div class="gasto"> con append
-
+    //ETIQUETAS
     let divGastoEtiquetas = document.createElement('div');
     divGastoEtiquetas.className = 'gasto-etiquetas';
     divGasto.append(divGastoEtiquetas);//Añadimos al final de <div class="gasto"> con append
@@ -59,7 +60,7 @@ function mostrarGastoWeb(idElemento, gasto) {
         divGastoEtiquetas.append(spanEtiqueta);
     }
 
-    // Creación Botón Editar por cada gasto
+    // Creación BOTÓN EDITAR por cada gasto
     let botonEditar = document.createElement('button');
     botonEditar.textContent = "Editar";
     botonEditar.className = "gasto-editar"
@@ -70,7 +71,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonEditar.addEventListener("click", manejadorBotonEditar);
 
 
-    // Creación de Botón Borrar para cada gasto
+    // Creación de BOTÓN BORRAR para cada gasto
     let botonBorrar = document.createElement('button');
     botonBorrar.textContent = "Borrar";
     botonBorrar.className = "gasto-borrar"
@@ -81,7 +82,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrar.addEventListener("click", manejadorBotonBorrar);
 
 
-    // Creación de Botón EditarFormulario para cada gasto
+    // Creación de BOTÓN EDITAR GASTO para cada gasto. (CREA UN FORMULARIO)
     let botonEditarFormulario = document.createElement("button");
     botonEditarFormulario.textContent = "Editar(formulario)";
     botonEditarFormulario.className = "gasto-editar-formulario";
@@ -90,7 +91,6 @@ function mostrarGastoWeb(idElemento, gasto) {
     let manejadorBotonEditarFormulario = new EditarHandleFormulario();
     manejadorBotonEditarFormulario.gasto = gasto;
     botonEditarFormulario.addEventListener("click", manejadorBotonEditarFormulario);
-
 
     elemento.append(divGasto); // Añadimos al final del elemento pasado por parametro
 }
@@ -293,7 +293,6 @@ function EditarHandleFormulario() {
 
         let manejadorSubmitFormulario = new SubmitHandleFormulario();
         manejadorSubmitFormulario.gasto = this.gasto; // Le pasamos la referencia del gasto actual que estamos tratando.
-
         formulario.addEventListener("submit", manejadorSubmitFormulario);
 
         //Manejador evento click boton cancelar del formulario
