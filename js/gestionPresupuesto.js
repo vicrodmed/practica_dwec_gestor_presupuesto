@@ -225,6 +225,39 @@ function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta =
 
 }
 
+function transformarListadoEtiquetas (etiquetas) {
+/*
+Para dar todas las facilidades a los usuarios, admitiremos varios tipos de separadores: ,, ., :, ; y espacio. Así, los usuarios podrán introducir las etiquetas de diferentes maneras: eti1, eti2, eti1 eti2, eti1:eti2, eti1;eti2, eti1.eti2.
+Ten en cuenta que la función debe manejar también correctamente combinaciones de separadores (coma más espacio, espacio más coma, etc.).
+
+a = transformarListadoEtiquetas("eti1,eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1, eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1 , eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1 ,   eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1.eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1. eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1:eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1;eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1 eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1    eti2"); // a = ["eti1","eti2"]
+a = transformarListadoEtiquetas("eti1 :, ; eti2"); // a = ["eti1","eti2"]
+*/
+
+var regEtiquetas = /\w*/g;
+
+var arrayEtiquetas = etiquetas.match(regEtiquetas);
+var arrayEtiquetasSinNulos =[];
+
+for (const e of arrayEtiquetas) {
+    if(e.length>0){
+        arrayEtiquetasSinNulos.push(e)
+    }
+}
+
+return arrayEtiquetasSinNulos.join(",");
+
+}
+
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
@@ -238,5 +271,6 @@ export {
     calcularTotalGastos,
     calcularBalance,
     filtrarGastos,
-    agruparGastos
+    agruparGastos,
+    transformarListadoEtiquetas
 }

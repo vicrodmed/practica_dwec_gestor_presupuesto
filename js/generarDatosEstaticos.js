@@ -76,7 +76,11 @@ web.mostrarGastosAgrupadosWeb('agrupacion-mes', gastoAgrupadosPorMes, "mes");
 let gastoAgrupadosPorAnyo = presupuesto.agruparGastos("anyo");
 web.mostrarGastosAgrupadosWeb('agrupacion-anyo', gastoAgrupadosPorAnyo, "anyo");
 
+/// PRUEBAS
+//console.log(presupuesto.transformarListadoEtiquetas("HolaXXXXhola"));
+//console.log('HolaXXXXhola'.replace(/Hola/,"Hello"));
 
+console.log(presupuesto.transformarListadoEtiquetas("coche,,:casa:::piso  "));
 
 
 
