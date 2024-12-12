@@ -80,7 +80,7 @@ web.mostrarGastosAgrupadosWeb('agrupacion-anyo', gastoAgrupadosPorAnyo, "anyo");
 //console.log(presupuesto.transformarListadoEtiquetas("HolaXXXXhola"));
 //console.log('HolaXXXXhola'.replace(/Hola/,"Hello"));
 
-console.log(presupuesto.transformarListadoEtiquetas("coche,,:casa:::piso  "));
+//console.log(presupuesto.transformarListadoEtiquetas("coche:casa:::piso ..cocina  "));
 
 
 

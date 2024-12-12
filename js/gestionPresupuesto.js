@@ -138,6 +138,9 @@ function calcularBalance() {
 
 function filtrarGastos(parametros) { // parametros es un objeto con las siguientes propiedades fechaDesde, fechaHasta, valorMinimo, valorMaximo, descripcionContiene, etiquetasTiene.
 
+    console.log(parametros);
+    console.log(Object.keys(parametros).length);
+    
 
     if (Object.keys(parametros).length == 0) return gastos; // Si no entra ningun parámetros devolvemos todos los gastos.
 
@@ -243,18 +246,18 @@ a = transformarListadoEtiquetas("eti1    eti2"); // a = ["eti1","eti2"]
 a = transformarListadoEtiquetas("eti1 :, ; eti2"); // a = ["eti1","eti2"]
 */
 
-var regEtiquetas = /\w*/g;
+let regEtiquetas = /\w*/g;
 
-var arrayEtiquetas = etiquetas.match(regEtiquetas);
-var arrayEtiquetasSinNulos =[];
+let arrayEtiquetas = etiquetas.match(regEtiquetas);
+let arrayEtiquetasSinNulos =[];
 
-for (const e of arrayEtiquetas) {
+for (let e of arrayEtiquetas) {
     if(e.length>0){
         arrayEtiquetasSinNulos.push(e)
     }
 }
 
-return arrayEtiquetasSinNulos.join(",");
+return arrayEtiquetasSinNulos;
 
 }
 

@@ -13,6 +13,10 @@ botonAnyadirgasto.addEventListener("click", anyadirgasto);
 let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formulario');
 botonAnyadirGastoFormulario.addEventListener("click", nuevoGastoWebFomulario);
 
+let formularioFiltrado = document.getElementById("formulario-filtrado");
+formularioFiltrado.addEventListener("submit",filtarGastoWeb);
+
+
 
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
@@ -317,6 +321,70 @@ function SubmitHandleFormulario() {
         etiquetasSeparadas.forEach(e => this.gasto.anyadirEtiquetas(e));
         repintar();
     };
+}
+
+//Función manejadora para el evento submit del formulario "formulario-filtrado"
+
+function filtarGastoWeb(event){
+   
+    event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
+    let form = event.currentTarget;// Accedemos al formulario que ha activado el evento.
+
+    let parametros={};
+
+/*     parametros.descripcionContiene = form.elements["formulario-filtrado-descripcion"].value == '' ? undefined : form.elements["formulario-filtrado-descripcion"].value;
+
+    parametros.valorMinimo = form.elements["formulario-filtrado-valor-minimo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-minimo"].value);
+
+    parametros.valorMaximo = form.elements["formulario-filtrado-valor-maximo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-maximo"].value);
+
+    parametros.fechaDesde = form.elements["formulario-filtrado-fecha-desde"].value == '' ? undefined : form.elements["formulario-filtrado-fecha-desde"].value;
+
+    parametros.fechaHasta = form.elements["formulario-filtrado-fecha-hasta"].value == '' ? undefined : form.elements["formulario-filtrado-fecha-hasta"].value;
+
+    parametros.etiquetasTiene = presupuesto.transformarListadoEtiquetas(form.elements["formulario-filtrado-etiquetas-tiene"].value); */
+
+    parametros.descripcionContiene = form.elements["formulario-filtrado-descripcion"].value;
+
+    parametros.valorMinimo = form.elements["formulario-filtrado-valor-minimo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-minimo"].value);
+
+    parametros.valorMaximo = form.elements["formulario-filtrado-valor-maximo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-maximo"].value);
+
+    parametros.fechaDesde = form.elements["formulario-filtrado-fecha-desde"].value;
+
+    parametros.fechaHasta = form.elements["formulario-filtrado-fecha-hasta"].value;
+
+    parametros.etiquetasTiene = presupuesto.transformarListadoEtiquetas(form.elements["formulario-filtrado-etiquetas-tiene"].value);
+
+    
+     console.log(presupuesto.filtrarGastos(parametros));
+
+     document.getElementById('listado-gastos-completo').innerHTML = "";
+
+     for (let e of presupuesto.filtrarGastos(parametros)) {
+        mostrarGastoWeb('listado-gastos-completo', e);
+    }
+
+
+
+
+
+    
+     
+     
+
+
+
+     
+  
+
+    
+    
+
+   
+    
+
+   
 }
 
 export {
