@@ -140,7 +140,7 @@ function filtrarGastos(parametros) { // parametros es un objeto con las siguient
 
     console.log(parametros);
     console.log(Object.keys(parametros).length);
-    
+
 
     if (Object.keys(parametros).length == 0) return gastos; // Si no entra ningun parámetros devolvemos todos los gastos.
 
@@ -187,7 +187,7 @@ function filtrarGastos(parametros) { // parametros es un objeto con las siguient
 
             //ERROR DETECTADO: NO se había hecho la comparación de maneta que no se distingan mayúsculas de minúsculas.Corrección:
             let parametroEtiquetasMinus = parametros.etiquetasTiene.map(e => e.toLowerCase());
-            let etiquetasGastoMinus = gasto.etiquetas.map(e =>e.toLowerCase());
+            let etiquetasGastoMinus = gasto.etiquetas.map(e => e.toLowerCase());
 
             for (let e of parametroEtiquetasMinus) { //Recorremos todas las etiquetas pasadas por parametro y comprobamos que si están en las etiquetas del gasto.
                 if (etiquetasGastoMinus.includes(e)) {
@@ -205,7 +205,7 @@ function filtrarGastos(parametros) { // parametros es un objeto con las siguient
 }
 
 function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = new Date().toISOString().split("T")[0]) {
-// Parametros por defecto.
+    // Parametros por defecto.
 
     let parametrosFiltrados = { // Como la función filtrarGasto recibe un un objeto como parametro, creamos un objeto para todos los parametros
         fechaDesde: fechaDesde,
@@ -228,37 +228,25 @@ function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta =
 
 }
 
-function transformarListadoEtiquetas (etiquetas) {
-/*
-Para dar todas las facilidades a los usuarios, admitiremos varios tipos de separadores: ,, ., :, ; y espacio. Así, los usuarios podrán introducir las etiquetas de diferentes maneras: eti1, eti2, eti1 eti2, eti1:eti2, eti1;eti2, eti1.eti2.
-Ten en cuenta que la función debe manejar también correctamente combinaciones de separadores (coma más espacio, espacio más coma, etc.).
 
-a = transformarListadoEtiquetas("eti1,eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1, eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1 , eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1 ,   eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1.eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1. eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1:eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1;eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1 eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1    eti2"); // a = ["eti1","eti2"]
-a = transformarListadoEtiquetas("eti1 :, ; eti2"); // a = ["eti1","eti2"]
-*/
+//La función transformarListadoEtiquetas se encargará de convertir todos estos formatos a un array de palabras. Para ello se deberán utilizar expresiones regulares.
 
-let regEtiquetas = /\w*/g;
+function transformarListadoEtiquetas(etiquetas) {
 
-let arrayEtiquetas = etiquetas.match(regEtiquetas);
-let arrayEtiquetasSinNulos =[];
+    // \w - Seleccionamos solo los caracteres alfanúmericos.
+    // * - 0 o más veces
+    // g - Búsqueda global, todas las ocurrencias
+    let regEtiquetas = /\w*/g;  //Expresión regular.
+    // .match - Devuelve un array con todas las ocurrencias de la expresión regular.
+    let arrayEtiquetas = etiquetas.match(regEtiquetas);
+    let arrayEtiquetasSinNulos = [];
 
-for (let e of arrayEtiquetas) {
-    if(e.length>0){
-        arrayEtiquetasSinNulos.push(e)
+    for (let e of arrayEtiquetas) {
+        if (e.length > 0) {
+            arrayEtiquetasSinNulos.push(e); //Solo almacenamos los elementos no nulos.
+        }
     }
-}
-
-return arrayEtiquetasSinNulos;
-
+    return arrayEtiquetasSinNulos;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.

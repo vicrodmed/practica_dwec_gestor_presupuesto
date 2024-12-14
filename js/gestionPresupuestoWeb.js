@@ -328,63 +328,36 @@ function SubmitHandleFormulario() {
 function filtarGastoWeb(event){
    
     event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
+
     let form = event.currentTarget;// Accedemos al formulario que ha activado el evento.
 
-    let parametros={};
+    let parametros={}; // Creación de un objeto vacío.
 
-/*     parametros.descripcionContiene = form.elements["formulario-filtrado-descripcion"].value == '' ? undefined : form.elements["formulario-filtrado-descripcion"].value;
+    // Asignamos los datos recogidos del formulario al objeto parámetros.
 
-    parametros.valorMinimo = form.elements["formulario-filtrado-valor-minimo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-minimo"].value);
-
-    parametros.valorMaximo = form.elements["formulario-filtrado-valor-maximo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-maximo"].value);
-
-    parametros.fechaDesde = form.elements["formulario-filtrado-fecha-desde"].value == '' ? undefined : form.elements["formulario-filtrado-fecha-desde"].value;
-
-    parametros.fechaHasta = form.elements["formulario-filtrado-fecha-hasta"].value == '' ? undefined : form.elements["formulario-filtrado-fecha-hasta"].value;
-
-    parametros.etiquetasTiene = presupuesto.transformarListadoEtiquetas(form.elements["formulario-filtrado-etiquetas-tiene"].value); */
-
+    //DESCRIPCIÓN
     parametros.descripcionContiene = form.elements["formulario-filtrado-descripcion"].value;
 
+    //VALOR MÍNIMO Y MÁXIMO
+    // Operador ternario para evitar que a valorMinimo y valorMaximo no se le asigne un 0 cuando no se introduce ningun dato en sus inputs correspondiente.
     parametros.valorMinimo = form.elements["formulario-filtrado-valor-minimo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-minimo"].value);
-
     parametros.valorMaximo = form.elements["formulario-filtrado-valor-maximo"].value == '' ? undefined : Number(form.elements["formulario-filtrado-valor-maximo"].value);
 
+    //FECHAS
     parametros.fechaDesde = form.elements["formulario-filtrado-fecha-desde"].value;
-
     parametros.fechaHasta = form.elements["formulario-filtrado-fecha-hasta"].value;
 
+    //ETIQUETAS
+    //Transformamos etiquetas con la función transformarListadoEtiquetas.
     parametros.etiquetasTiene = presupuesto.transformarListadoEtiquetas(form.elements["formulario-filtrado-etiquetas-tiene"].value);
 
-    
-     console.log(presupuesto.filtrarGastos(parametros));
-
+    //Limpiamos el dvv#listado-gastos-completo
      document.getElementById('listado-gastos-completo').innerHTML = "";
 
+     //Mostramos todos los gastos filtrados.
      for (let e of presupuesto.filtrarGastos(parametros)) {
         mostrarGastoWeb('listado-gastos-completo', e);
     }
-
-
-
-
-
-    
-     
-     
-
-
-
-     
-  
-
-    
-    
-
-   
-    
-
-   
 }
 
 export {
