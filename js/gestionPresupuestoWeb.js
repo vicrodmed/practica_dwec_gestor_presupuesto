@@ -14,7 +14,13 @@ let botonAnyadirGastoFormulario = document.getElementById('anyadirgasto-formular
 botonAnyadirGastoFormulario.addEventListener("click", nuevoGastoWebFomulario);
 
 let formularioFiltrado = document.getElementById("formulario-filtrado");
-formularioFiltrado.addEventListener("submit",filtarGastoWeb);
+formularioFiltrado.addEventListener("submit", filtarGastoWeb);
+
+let botonGuardarGastos = document.getElementById("guardar-gastos");
+botonGuardarGastos.addEventListener("click", guardarGastosWeb);
+
+let botonCargarGastos = document.getElementById("cargar-gastos");
+botonCargarGastos.addEventListener("click", cargarGastosWeb);
 
 
 
@@ -325,13 +331,13 @@ function SubmitHandleFormulario() {
 
 //Función manejadora para el evento submit del formulario "formulario-filtrado"
 
-function filtarGastoWeb(event){
-   
+function filtarGastoWeb(event) {
+
     event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
 
     let form = event.currentTarget;// Accedemos al formulario que ha activado el evento.
 
-    let parametros={}; // Creación de un objeto vacío.
+    let parametros = {}; // Creación de un objeto vacío.
 
     // Asignamos los datos recogidos del formulario al objeto parámetros.
 
@@ -352,12 +358,32 @@ function filtarGastoWeb(event){
     parametros.etiquetasTiene = presupuesto.transformarListadoEtiquetas(form.elements["formulario-filtrado-etiquetas-tiene"].value);
 
     //Limpiamos el dvv#listado-gastos-completo
-     document.getElementById('listado-gastos-completo').innerHTML = "";
+    document.getElementById('listado-gastos-completo').innerHTML = "";
 
-     //Mostramos todos los gastos filtrados.
-     for (let e of presupuesto.filtrarGastos(parametros)) {
+    //Mostramos todos los gastos filtrados.
+    for (let e of presupuesto.filtrarGastos(parametros)) {
         mostrarGastoWeb('listado-gastos-completo', e);
     }
+}
+
+//Función guardarGastosWeb. Esta función se utilizará como manejadora de eventos del evento click del botón guardar-gastos.
+function guardarGastosWeb() {
+    localStorage.setItem("GestorGastosDWEC", JSON.stringify(presupuesto.listarGastos()));
+}
+
+function cargarGastosWeb() {
+    let gastosGuardados = [];
+
+    //Si no existe la clave en el almacenamiento, llamará a cargarGastos con un array vacío.
+    if (localStorage.getItem("GestorGastosDWEC") !== null) {
+        gastosGuardados = JSON.parse(localStorage.getItem("GestorGastosDWEC"));
+        presupuesto.cargarGastos(gastosGuardados);
+
+    } else {
+        presupuesto.cargarGastos([]);
+    }
+    repintar();
+
 }
 
 export {

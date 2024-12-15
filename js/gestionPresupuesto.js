@@ -138,10 +138,6 @@ function calcularBalance() {
 
 function filtrarGastos(parametros) { // parametros es un objeto con las siguientes propiedades fechaDesde, fechaHasta, valorMinimo, valorMaximo, descripcionContiene, etiquetasTiene.
 
-    console.log(parametros);
-    console.log(Object.keys(parametros).length);
-
-
     if (Object.keys(parametros).length == 0) return gastos; // Si no entra ningun parámetros devolvemos todos los gastos.
 
     return gastos.filter(function (gasto) { // funcion filter recorre todos los gastos y aplica los criterios de filtrado.
@@ -228,9 +224,7 @@ function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta =
 
 }
 
-
 //La función transformarListadoEtiquetas se encargará de convertir todos estos formatos a un array de palabras. Para ello se deberán utilizar expresiones regulares.
-
 function transformarListadoEtiquetas(etiquetas) {
 
     // \w - Seleccionamos solo los caracteres alfanúmericos.
@@ -249,6 +243,36 @@ function transformarListadoEtiquetas(etiquetas) {
     return arrayEtiquetasSinNulos;
 }
 
+// Función cargarGastos para sobreescribir el listado completo de gastos desde una copia de seguridad. La función cargarGastos tendrá que transformar ese array de objetos “planos” (sin funcionalidad) en objetos de tipo CrearGasto. A este proceso se le suele llamar rehidratación de objetos.
+
+function cargarGastos(gastosAlmacenamiento) {
+    // gastosAlmacenamiento es un array de objetos "planos"
+    // No tienen acceso a los métodos creados con "CrearGasto":
+    // "anyadirEtiquetas", "actualizarValor",...
+    // Solo tienen guardadas sus propiedades: descripcion, valor, fecha y etiquetas
+
+    // Reseteamos la variable global "gastos"
+    gastos = [];
+    // Procesamos cada gasto del listado pasado a la función
+    for (let g of gastosAlmacenamiento) {
+        // Creamos un nuevo objeto mediante el constructor
+        // Este objeto tiene acceso a los métodos "anyadirEtiquetas", "actualizarValor",...
+        // Pero sus propiedades (descripcion, valor, fecha y etiquetas) están sin asignar
+        let gastoRehidratado = new CrearGasto();
+        // Copiamos los datos del objeto guardado en el almacenamiento
+        // al gasto rehidratado
+        // https://es.javascript.info/object-copy#cloning-and-merging-object-assign
+
+        Object.assign(gastoRehidratado, g);
+        // Ahora "gastoRehidratado" tiene las propiedades del gasto
+        // almacenado y además tiene acceso a los métodos de "CrearGasto"
+
+        // Añadimos el gasto rehidratado a "gastos"
+        gastos.push(gastoRehidratado)
+    }
+}
+
+
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
@@ -263,5 +287,6 @@ export {
     calcularBalance,
     filtrarGastos,
     agruparGastos,
-    transformarListadoEtiquetas
+    transformarListadoEtiquetas,
+    cargarGastos
 }
