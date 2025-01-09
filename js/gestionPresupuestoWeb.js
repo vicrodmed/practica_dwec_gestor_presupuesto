@@ -22,6 +22,9 @@ botonGuardarGastos.addEventListener("click", guardarGastosWeb);
 let botonCargarGastos = document.getElementById("cargar-gastos");
 botonCargarGastos.addEventListener("click", cargarGastosWeb);
 
+let botonCargarGastosApi = document.getElementById("cargar-gastos-api");
+botonCargarGastosApi.addEventListener("click",cargarGastosApi);
+
 
 
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
@@ -385,6 +388,26 @@ function cargarGastosWeb() {
     repintar();
 
 }
+
+async function cargarGastosApi(event){
+    event.preventDefault();
+    let nombreUsuario = document.getElementById("nombre_usuario").value;
+
+    let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`, 
+     {
+        method:"GET"
+     });
+
+     if (respuesta.ok){
+        let datos = await respuesta.json();
+        console.log(datos);
+        presupuesto.cargarGastos(datos);
+        repintar();
+        
+     }
+}
+
+
 
 export {
     mostrarDatoEnID,
