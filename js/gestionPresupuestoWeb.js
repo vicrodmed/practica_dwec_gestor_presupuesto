@@ -23,7 +23,7 @@ let botonCargarGastos = document.getElementById("cargar-gastos");
 botonCargarGastos.addEventListener("click", cargarGastosWeb);
 
 let botonCargarGastosApi = document.getElementById("cargar-gastos-api");
-botonCargarGastosApi.addEventListener("click",cargarGastosApi);
+botonCargarGastosApi.addEventListener("click", cargarGastosApi);
 
 
 
@@ -101,14 +101,9 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrarApi.className = "gatos-borrar-api";
     divGasto.append(botonBorrarApi);
     // Manejador y asociación con el gasto
-    
-
-
-
-
-
-
-
+    let manejadorBotonBorrarApi = new BorrarBorrarApi();
+    manejadorBotonBorrarApi.gasto = gasto;
+    botonBorrarApi.addEventListener("click", manejadorBotonBorrarApi);
 
 
     // Creación de BOTÓN EDITAR GASTO para cada gasto. (CREA UN FORMULARIO)
@@ -254,6 +249,12 @@ function nuevoGastoWebFomulario() {
     manejadorBotonCancelar.boton = botonAnyadirGastoFormulario; // Propiedad boton
     botonCancelar.addEventListener("click", manejadorBotonCancelar);
 
+    //Manejador evento click Manejador de eventos del botón .gasto-enviar-api dentro de nuevoGastoWebFormulario
+
+    let botonGastoEnviarApi = document.getElementById("gasto-enviar-api");
+    let manejadorBotonGastoEnviarApi = new EnviarGastoApiFormulario();
+    botonGastoEnviarApi.addEventListener("click", manejadorBotonGastoEnviarApi);
+
 }
 
 // Funciones que utilizan el método handleEvent para crear objetos que responda a eventos.
@@ -348,8 +349,53 @@ function SubmitHandleFormulario() {
     };
 }
 
-//Función manejadora para el evento submit del formulario "formulario-filtrado"
+// Función manejadora para el evento click de borrar gasto a tráves de la API del servidor.
+function BorrarBorrarApi() {
+    this.handleEvent = async function (event) {
+        event.preventDefault();
+        let nombreUsuario = document.getElementById("nombre_usuario").value;
+        let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.id}`,
+            {
+                method: "DELETE"
+            });
 
+        if (respuesta.ok) {
+
+            cargarGastosApi();
+        }
+
+    }
+}
+
+//Función manejadora para el evento click de boton Enviar (API) del formulario Añadir Gasto (formulario).
+async function EnviarGastoApiFormulario() {
+    this.handleEvent = async function (event) {
+        event.preventDefault();
+        let nombreUsuario = document.getElementById("nombre_usuario").value;
+
+        let formulario = event.currentTarget;
+        console.log(formulario);
+
+    }
+
+
+
+
+    /* let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`, 
+        {
+           method:"POST"
+        });
+   
+        if (respuesta.ok){
+           let datos = await respuesta.json();
+           console.log(datos);
+           presupuesto.cargarGastos(datos);
+           repintar();
+           
+        } */
+}
+
+//Función manejadora para el evento submit del formulario "formulario-filtrado"
 function filtarGastoWeb(event) {
 
     event.preventDefault();// Desactivamos el comportamiento del formulario por defecto.
@@ -405,22 +451,37 @@ function cargarGastosWeb() {
 
 }
 
-async function cargarGastosApi(event){
-    event.preventDefault();
+async function cargarGastosApi() {
+
     let nombreUsuario = document.getElementById("nombre_usuario").value;
 
-    let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`, 
-     {
-        method:"GET"
-     });
+    //Comprobamos que el input#nombre_usuario contiene el nombre del usuario.
+    if (!nombreUsuario) {
+        alert('Por favor, introduce un nombre de usuario.');
+        return;
+    }
 
-     if (respuesta.ok){
-        let datos = await respuesta.json();
-        console.log(datos);
-        presupuesto.cargarGastos(datos);
-        repintar();
+    try {
         
-     }
+        let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`,
+            {
+                method: "GET"
+            });
+
+        if (!respuesta.ok) {
+            throw new Error(`Error: ${respuesta.status} - ${respuesta.statusText}`);
+        }
+
+        let listadoGastos = await respuesta.json();
+        console.log(listadoGastos);
+
+        presupuesto.cargarGastos(listadoGastos);
+        repintar();
+
+    } catch (error) {
+        console.error('Error al cargar los gastos:', error);
+    }
+
 }
 
 
