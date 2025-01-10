@@ -101,7 +101,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrarApi.className = "gatos-borrar-api";
     divGasto.append(botonBorrarApi);
     // Manejador y asociación con el gasto
-    let manejadorBotonBorrarApi = new BorrarBorrarApi();
+    let manejadorBotonBorrarApi = new BorrarGastoApi();
     manejadorBotonBorrarApi.gasto = gasto;
     botonBorrarApi.addEventListener("click", manejadorBotonBorrarApi);
 
@@ -251,9 +251,56 @@ function nuevoGastoWebFomulario() {
 
     //Manejador evento click Manejador de eventos del botón .gasto-enviar-api dentro de nuevoGastoWebFormulario
 
-    let botonGastoEnviarApi = document.getElementById("gasto-enviar-api");
-    let manejadorBotonGastoEnviarApi = new EnviarGastoApiFormulario();
-    botonGastoEnviarApi.addEventListener("click", manejadorBotonGastoEnviarApi);
+    let botonGastoEnviarApi = document.querySelector("button.gasto-enviar-api");
+
+    botonGastoEnviarApi.addEventListener("click", async function (event) {
+
+        console.log(botonGastoEnviarApi);
+
+        event.preventDefault();
+
+        let formulario = event.target.closest('form');
+
+        console.log(formulario);
+
+
+        let nombreUsuario = document.getElementById("nombre_usuario").value;
+
+        //Comprobamos que el input#nombre_usuario contiene el nombre del usuario.
+        if (!nombreUsuario) {
+            alert('Por favor, introduce un nombre de usuario.');
+            return;
+        }
+
+        let formData = new FormData(formulario);
+        let dataObject = {};
+        formData.forEach((value, key) => {
+            dataObject[key] = value;
+        });
+
+        try {
+            let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`,
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataObject)
+                });
+
+            if (!respuesta.ok) {
+                throw new Error(`Error: ${respuesta.status} - ${respuesta.statusText}`);
+            }
+
+            cargarGastosApi();
+
+
+        } catch (error) {
+            console.error('Error al enviar el gasto:', error);
+        }
+
+
+    });
 
 }
 
@@ -349,50 +396,36 @@ function SubmitHandleFormulario() {
     };
 }
 
-// Función manejadora para el evento click de borrar gasto a tráves de la API del servidor.
-function BorrarBorrarApi() {
-    this.handleEvent = async function (event) {
-        event.preventDefault();
+// Función manejadora para el evento click de borrar gasto a tráves de la API del servidor. mostrarGastoWeb
+function BorrarGastoApi() {
+    this.handleEvent = async function () {
+
         let nombreUsuario = document.getElementById("nombre_usuario").value;
-        let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.id}`,
-            {
-                method: "DELETE"
-            });
 
-        if (respuesta.ok) {
+        //Comprobamos que el input#nombre_usuario contiene el nombre del usuario.
+        if (!nombreUsuario) {
+            alert('Por favor, introduce un nombre de usuario.');
+            return;
+        }
 
-            cargarGastosApi();
+        try {
+            let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.id}`,
+                {
+                    method: "DELETE"
+                });
+
+            if (!respuesta.ok) {
+                throw new Error(`Error: ${respuesta.status} - ${respuesta.statusText}`);
+            }
+
+            // Llamar a cargarGastosApi para actualizar la lista en la página
+            await cargarGastosApi();
+
+        } catch (error) {
+            console.error('Error al eliminar el gasto:', error);
         }
 
     }
-}
-
-//Función manejadora para el evento click de boton Enviar (API) del formulario Añadir Gasto (formulario).
-async function EnviarGastoApiFormulario() {
-    this.handleEvent = async function (event) {
-        event.preventDefault();
-        let nombreUsuario = document.getElementById("nombre_usuario").value;
-
-        let formulario = event.currentTarget;
-        console.log(formulario);
-
-    }
-
-
-
-
-    /* let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`, 
-        {
-           method:"POST"
-        });
-   
-        if (respuesta.ok){
-           let datos = await respuesta.json();
-           console.log(datos);
-           presupuesto.cargarGastos(datos);
-           repintar();
-           
-        } */
 }
 
 //Función manejadora para el evento submit del formulario "formulario-filtrado"
