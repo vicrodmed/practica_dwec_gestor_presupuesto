@@ -95,6 +95,22 @@ function mostrarGastoWeb(idElemento, gasto) {
     botonBorrar.addEventListener("click", manejadorBotonBorrar);
 
 
+    // Creación del BOTÓN BORRAR (API)
+    let botonBorrarApi = document.createElement('button');
+    botonBorrarApi.textContent = "Borrar (API)";
+    botonBorrarApi.className = "gatos-borrar-api";
+    divGasto.append(botonBorrarApi);
+    // Manejador y asociación con el gasto
+    
+
+
+
+
+
+
+
+
+
     // Creación de BOTÓN EDITAR GASTO para cada gasto. (CREA UN FORMULARIO)
     let botonEditarFormulario = document.createElement("button");
     botonEditarFormulario.textContent = "Editar(formulario)";
