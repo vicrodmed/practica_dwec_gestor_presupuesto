@@ -462,7 +462,7 @@ async function cargarGastosApi() {
     }
 
     try {
-        
+
         let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`,
             {
                 method: "GET"
@@ -483,7 +483,6 @@ async function cargarGastosApi() {
     }
 
 }
-
 
 
 export {
