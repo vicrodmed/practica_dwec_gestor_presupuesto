@@ -408,8 +408,11 @@ function BorrarGastoApi() {
             return;
         }
 
+        console.log(this.gasto.gastoId);
+        
+
         try {
-            let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.id}`,
+            let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.gastoId}`,
                 {
                     method: "DELETE"
                 });
