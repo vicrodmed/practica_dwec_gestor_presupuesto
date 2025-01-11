@@ -250,9 +250,7 @@ function nuevoGastoWebFomulario() {
     botonCancelar.addEventListener("click", manejadorBotonCancelar);
 
     //Manejador evento click Manejador de eventos del botón .gasto-enviar-api dentro de nuevoGastoWebFormulario
-
     let botonGastoEnviarApi = document.querySelector("button.gasto-enviar-api");
-
     botonGastoEnviarApi.addEventListener("click", async function (event) {
 
         console.log(botonGastoEnviarApi);
@@ -272,11 +270,16 @@ function nuevoGastoWebFomulario() {
             return;
         }
 
-        let formData = new FormData(formulario);
-        let dataObject = {};
-        formData.forEach((value, key) => {
-            dataObject[key] = value;
-        });
+         // Obtenemos los valores del formulario
+         let descripcion = formulario.elements["descripcion"].value;
+         let valor = formulario.elements["valor"].value;
+         let fecha = new Date(formulario.elements["fecha"].value);
+         let etiquetasFormArray = formulario.elements["etiquetas"].value.split(",");
+         // Creamos el gasto
+         let gasto = new presupuesto.CrearGasto(descripcion, Number(valor), fecha);
+         // Añadimos las equiquetas
+         etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
+
 
         try {
             let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`,
@@ -285,7 +288,7 @@ function nuevoGastoWebFomulario() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(dataObject)
+                    body: JSON.stringify(gasto)
                 });
 
             if (!respuesta.ok) {
@@ -293,6 +296,8 @@ function nuevoGastoWebFomulario() {
             }
 
             cargarGastosApi();
+            botonAnyadirGastoFormulario.disabled = false;
+            formulario.remove();
 
 
         } catch (error) {
