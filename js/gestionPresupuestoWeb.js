@@ -25,8 +25,6 @@ botonCargarGastos.addEventListener("click", cargarGastosWeb);
 let botonCargarGastosApi = document.getElementById("cargar-gastos-api");
 botonCargarGastosApi.addEventListener("click", cargarGastosApi);
 
-
-
 //Función de dos parámetros que se encargará de escribir el valor (texto) en el elemento HTML con id idElemento indicado
 function mostrarDatoEnID(idElemento, valor) {
     let elemento = document.getElementById(idElemento);
@@ -251,16 +249,12 @@ function nuevoGastoWebFomulario() {
 
     //Manejador evento click Manejador de eventos del botón .gasto-enviar-api dentro de nuevoGastoWebFormulario
     let botonGastoEnviarApi = document.querySelector("button.gasto-enviar-api");
-    botonGastoEnviarApi.addEventListener("click", async function (event) {
 
-        console.log(botonGastoEnviarApi);
+    botonGastoEnviarApi.addEventListener("click", async function (event) {
 
         event.preventDefault();
 
         let formulario = event.target.closest('form');
-
-        console.log(formulario);
-
 
         let nombreUsuario = document.getElementById("nombre_usuario").value;
 
@@ -270,16 +264,15 @@ function nuevoGastoWebFomulario() {
             return;
         }
 
-         // Obtenemos los valores del formulario
-         let descripcion = formulario.elements["descripcion"].value;
-         let valor = formulario.elements["valor"].value;
-         let fecha = new Date(formulario.elements["fecha"].value);
-         let etiquetasFormArray = formulario.elements["etiquetas"].value.split(",");
-         // Creamos el gasto
-         let gasto = new presupuesto.CrearGasto(descripcion, Number(valor), fecha);
-         // Añadimos las equiquetas
-         etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
-
+        // Obtenemos los valores del formulario
+        let descripcion = formulario.elements["descripcion"].value;
+        let valor = formulario.elements["valor"].value;
+        let fecha = new Date(formulario.elements["fecha"].value);
+        let etiquetasFormArray = formulario.elements["etiquetas"].value.split(",");
+        // Creamos el gasto
+        let gasto = new presupuesto.CrearGasto(descripcion, Number(valor), fecha);
+        // Añadimos las equiquetas
+        etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
 
         try {
             let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}`,
@@ -303,8 +296,6 @@ function nuevoGastoWebFomulario() {
         } catch (error) {
             console.error('Error al enviar el gasto:', error);
         }
-
-
     });
 
 }
@@ -387,8 +378,8 @@ function EditarHandleFormulario() {
         // Manejador evento click boton Enviar API
         let botonGastoEnviarApi = document.querySelector("button.gasto-enviar-api");
         let manejadorEnviarGastoApi = new EditarGastoApi();
-        manejadorEnviarGastoApi.gasto=this.gasto;
-        botonGastoEnviarApi.addEventListener("click",manejadorEnviarGastoApi);
+        manejadorEnviarGastoApi.gasto = this.gasto;
+        botonGastoEnviarApi.addEventListener("click", manejadorEnviarGastoApi);
 
     }
 }
@@ -419,9 +410,6 @@ function BorrarGastoApi() {
             return;
         }
 
-        console.log(this.gasto.gastoId);
-        
-
         try {
             let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${this.gasto.gastoId}`,
                 {
@@ -442,24 +430,24 @@ function BorrarGastoApi() {
     }
 }
 
-function EditarGastoApi(){
-    this.handleEvent = async function(event){
-       
+function EditarGastoApi() {
+    this.handleEvent = async function (event) {
+
         event.preventDefault();
         let gastoIdEditar = this.gasto.gastoId;
         let formulario = event.target.closest('form');
         let nombreUsuario = document.getElementById("nombre_usuario").value;
-         // Obtenemos los valores del formulario
-         let descripcion = formulario.elements["descripcion"].value;
-         let valor = formulario.elements["valor"].value;
-         let fecha = new Date(formulario.elements["fecha"].value);
-         let etiquetasFormArray = formulario.elements["etiquetas"].value.split(",");
-         // Creamos el gasto
-         let gasto = new presupuesto.CrearGasto(descripcion, Number(valor), fecha);
-         // Añadimos las equiquetas
-         etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
+        // Obtenemos los valores del formulario
+        let descripcion = formulario.elements["descripcion"].value;
+        let valor = formulario.elements["valor"].value;
+        let fecha = new Date(formulario.elements["fecha"].value);
+        let etiquetasFormArray = formulario.elements["etiquetas"].value.split(",");
+        // Creamos el gasto
+        let gasto = new presupuesto.CrearGasto(descripcion, Number(valor), fecha);
+        // Añadimos las equiquetas
+        etiquetasFormArray.forEach(e => gasto.anyadirEtiquetas(e));
 
-         try {
+        try {
             let respuesta = await fetch(`https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombreUsuario}/${gastoIdEditar}`,
                 {
                     method: "PUT",
@@ -482,7 +470,7 @@ function EditarGastoApi(){
         }
 
 
-        
+
     }
 }
 
@@ -564,8 +552,6 @@ async function cargarGastosApi() {
         }
 
         let listadoGastos = await respuesta.json();
-        console.log(listadoGastos);
-
         presupuesto.cargarGastos(listadoGastos);
         repintar();
 
@@ -574,7 +560,6 @@ async function cargarGastosApi() {
     }
 
 }
-
 
 export {
     mostrarDatoEnID,
